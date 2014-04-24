@@ -17,4 +17,12 @@
 	    android:divider="@android:color/white"
 	    android:scrollbarStyle="outsideOverlay" />
         
+    <ImageButton
+	    android:id="@+id/buttonNavigate"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_centerHorizontal="true"
+	    android:layout_alignParentBottom="true"
+	    android:src="@drawable/ic_action_directions"
+	    android:onClick="onClickNavigate" />
 </RelativeLayout>

@@ -9,7 +9,7 @@
     tools:context="com.kiri.hackjak.MainActivity$PlaceholderFragment" >
 
     <AutoCompleteTextView
-        android:id="@+id/editFrom"
+        android:id="@+id/acEditFrom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -27,12 +27,12 @@
         android:text="To" />
 
     <AutoCompleteTextView
-        android:id="@+id/editTo"
+        android:id="@+id/acEditTo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editFrom"
+        android:layout_alignLeft="@+id/acEditFrom"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/editFrom"
+        android:layout_below="@+id/acEditFrom"
         android:ems="10" />
 
     <Button
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/editTo"
+        android:layout_below="@+id/acEditTo"
         android:onClick="onClickSearch"
         android:text="Search" />
 
@@ -49,7 +49,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/editTo"
+        android:layout_above="@+id/acEditTo"
         android:layout_alignParentLeft="true"
         android:text="From" />
 

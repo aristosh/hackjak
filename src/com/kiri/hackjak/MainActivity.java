@@ -1,31 +1,26 @@
 package com.kiri.hackjak;
 
-import com.kiri.hackjak.R;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
     
+	private FragmentManager mFragmentManager;
+	private SearchFragment mSearchFragment;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		mFragmentManager = getSupportFragmentManager();
+		mSearchFragment = new SearchFragment();
 		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new SearchFragment()).commit();
+			mFragmentManager.beginTransaction().add(R.id.header, mSearchFragment).commit();
 		}
 	}
 
@@ -49,11 +44,41 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void onClickSearch(View v) {
-		Intent intent = new Intent(this, ListResultActivity.class);
-		intent.putExtra("FROM", ((EditText)findViewById(R.id.editFrom)).getText().toString());
-		intent.putExtra("TO", ((EditText)findViewById(R.id.editTo)).getText().toString());
-		startActivity(intent);
+	public void onClickSearch(View v) {		
+		Bundle argsHeader = new Bundle();		
+		RouteListFragment fragmentContainer = new RouteListFragment();
+		
+		mFragmentManager.beginTransaction()
+			.replace(R.id.container, fragmentContainer)
+			.commit();
 	}
 
+	public void onClickButtonFrom(View v) {
+		mFragmentManager.beginTransaction()
+			.replace(R.id.header, mSearchFragment)
+			.commit();
+		Toast.makeText(this, "onClickButtonFrom", Toast.LENGTH_SHORT).show();
+		// TODO
+		// create navigation in notification
+	}
+	
+	public void onClickButtonTo(View v) {
+		mFragmentManager.beginTransaction()
+			.replace(R.id.header, mSearchFragment)
+			.commit();
+		
+		Toast.makeText(this, "onClickButtonTo", Toast.LENGTH_SHORT).show();
+		// TODO
+		// create navigation in notification
+	}
+	
+	public void onClickNavigate(View v) {
+		Toast.makeText(this, "Mode Navigasi", Toast.LENGTH_SHORT).show();
+		
+		Navigation navigation = Navigation.getInstance();
+		navigation.initiateRoutes(this, RouteListFragment.mDummyList);
+		navigation.redraw();
+		
+		moveTaskToBack(true);
+	}
 }

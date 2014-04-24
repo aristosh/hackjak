@@ -28,9 +28,9 @@ public class SearchFragment extends Fragment {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_dropdown_item_1line, TEXT_AUTOCOMPLETE);
         AutoCompleteTextView editFrom = (AutoCompleteTextView)
-                getActivity().findViewById(R.id.editFrom);
+                getActivity().findViewById(R.id.acEditFrom);
         AutoCompleteTextView editTo = (AutoCompleteTextView)
-                getActivity().findViewById(R.id.editTo);
+                getActivity().findViewById(R.id.acEditTo);
         editFrom.setAdapter(adapter);
         editTo.setAdapter(adapter);
 	}

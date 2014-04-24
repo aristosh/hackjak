@@ -5,15 +5,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import com.kiri.hackjak.adapters.WaypointAdapter;
 import com.kiri.hackjak.apis.ApiGrabberHelper;
 
 public class SearchFragment extends Fragment {
-	private static final String[] TEXT_AUTOCOMPLETE = new String[] { "Belgium",
-			"France", "Italy", "Germany", "Spain" };
+//	private static final String[] TEXT_AUTOCOMPLETE = new String[] { "Belgium",
+//			"France", "Italy", "Germany", "Spain" };
 
 	AutoCompleteTextView acFrom;
 	AutoCompleteTextView acTo;
@@ -39,18 +38,6 @@ public class SearchFragment extends Fragment {
 		acTo.setAdapter(adapter);
 
 		return rootView;
-	}
-
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_dropdown_item_1line, TEXT_AUTOCOMPLETE);
-		AutoCompleteTextView editFrom = (AutoCompleteTextView) getActivity()
-				.findViewById(R.id.acEditFrom);
-		AutoCompleteTextView editTo = (AutoCompleteTextView) getActivity()
-				.findViewById(R.id.acEditTo);
-		editFrom.setAdapter(adapter);
-		editTo.setAdapter(adapter);
 	}
 
 }

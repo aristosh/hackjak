@@ -6,27 +6,16 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.hackjak.hackjak.MainActivity$PlaceholderFragment" >
+    tools:context="com.kiri.hackjak.MainActivity$PlaceholderFragment" >
 
-    <EditText
-        android:id="@+id/editText1"
+    <AutoCompleteTextView
+        android:id="@+id/editFrom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/textView1"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/editText1"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="18dp"
-        android:text="From" />
+        android:ems="10" />
 
     <TextView
         android:id="@+id/TextView01"
@@ -37,22 +26,31 @@
         android:layout_marginTop="14dp"
         android:text="To" />
 
-    <EditText
-        android:id="@+id/editText2"
+    <AutoCompleteTextView
+        android:id="@+id/editTo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_below="@+id/editText1"
+        android:layout_alignLeft="@+id/editFrom"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/editFrom"
         android:ems="10" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView01"
-        android:layout_alignRight="@+id/editText2"
-        android:layout_below="@+id/editText2"
-        android:text="Search"
-        android:onClick="onClickSearch"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/editTo"
+        android:onClick="onClickSearch"
+        android:text="Search" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/editTo"
+        android:layout_alignParentLeft="true"
+        android:text="From" />
 
 </RelativeLayout>

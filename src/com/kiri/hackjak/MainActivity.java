@@ -44,36 +44,16 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void onClickSearch(View v) {		
-		Bundle argsHeader = new Bundle();		
+	public void onClickSearch(View v) {	
 		RouteListFragment fragmentContainer = new RouteListFragment();
 		
 		mFragmentManager.beginTransaction()
 			.replace(R.id.container, fragmentContainer)
 			.commit();
 	}
-
-	public void onClickButtonFrom(View v) {
-		mFragmentManager.beginTransaction()
-			.replace(R.id.header, mSearchFragment)
-			.commit();
-		Toast.makeText(this, "onClickButtonFrom", Toast.LENGTH_SHORT).show();
-		// TODO
-		// create navigation in notification
-	}
-	
-	public void onClickButtonTo(View v) {
-		mFragmentManager.beginTransaction()
-			.replace(R.id.header, mSearchFragment)
-			.commit();
-		
-		Toast.makeText(this, "onClickButtonTo", Toast.LENGTH_SHORT).show();
-		// TODO
-		// create navigation in notification
-	}
 	
 	public void onClickNavigate(View v) {
-		Toast.makeText(this, "Mode Navigasi", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Navigation Mode", Toast.LENGTH_SHORT).show();
 		
 		Navigation navigation = Navigation.getInstance();
 		navigation.initiateRoutes(this, RouteListFragment.mDummyList);

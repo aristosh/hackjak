@@ -53,10 +53,7 @@ public class Navigation {
 	}
 	
 	public void actionStop() {
-		notificationManager.cancel(NOTIFICATION_ID);
-		Intent intent = new Intent(mContext, mContext.getClass());
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		mContext.startActivity(intent);
+		notificationManager.cancel(NOTIFICATION_ID);;
 	}
 	
 	public void redraw() {		

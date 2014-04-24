@@ -16,6 +16,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="onClickNavigate"
+        style="@style/MyButton"
         android:src="@drawable/ic_action_directions" />
 
 </RelativeLayout>

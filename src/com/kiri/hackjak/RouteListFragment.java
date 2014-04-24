@@ -3,6 +3,8 @@ package com.kiri.hackjak;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kiri.hackjak.adapters.ResultAdapter;
+
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;

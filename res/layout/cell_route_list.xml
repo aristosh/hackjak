@@ -1,32 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light_black"
+    android:contentDescription="Naik angkot S02 berwarna hitam di Setiabudi"
+    android:gravity="center_vertical"
+    android:minHeight="60dp" >
 
-    <ImageView   
-        android:id="@+id/imageSpeak"
+    <View
+        android:layout_width="3dp"
+        android:layout_height="match_parent"
+        android:background="#1E93FF" />
+
+    <!-- <ImageView -->
+    <!-- android:id="@+id/imageBus" -->
+    <!-- android:layout_width="40dp" -->
+    <!-- android:layout_height="40dp" -->
+    <!-- android:src="@drawable/ic_action_volume_on" /> -->
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_volume_on"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true" />
-    
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="15dp"
+        android:fontFamily="sans-serif-thin"
+        android:text="S06"
+        android:textColor="#FFF"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <!-- <ImageView -->
+    <!-- android:id="@+id/imageSpeak" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_alignParentLeft="true" -->
+    <!-- android:layout_centerVertical="true" -->
+    <!-- android:src="@drawable/ic_action_volume_on" /> -->
+
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageMap"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/imageMap"
-        android:layout_toRightOf="@+id/imageSpeak"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_weight="1"
+        android:fontFamily="sans-serif-thin"
+        android:text="Naik angkot lalu turun di angkot"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#FFF" />
 
     <ImageView
         android:id="@+id/imageMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_action_map" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/arrow_blue" />
 
-</RelativeLayout>
+</LinearLayout>

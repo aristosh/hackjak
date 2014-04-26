@@ -37,6 +37,6 @@ public class FormattedResult {
 		return noTrayekString;
 	}
 	public String getDetail() {
-		return String.format("Take %s %s at %s, then alight at %s", kategoriString, noTrayekString, naik, turun);
+		return String.format("Take %s %s at %s, then alight at %s", kategoriString, noTrayekString, naikString, turunString);
 	}
 }

@@ -6,6 +6,8 @@ import java.util.List;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -91,8 +93,7 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 		acTo = (AutoCompleteTextView) rootView.findViewById(R.id.acEditTo);
 		btnSearch = (Button) rootView.findViewById(R.id.btnSearch);
 
-		WaypointAdapter adapter = new WaypointAdapter(getActivity(),
-				android.R.layout.simple_dropdown_item_1line);
+		WaypointAdapter adapter = new WaypointAdapter(getActivity());
 		acFrom.setAdapter(adapter);
 		acTo.setAdapter(adapter);
 
@@ -140,7 +141,7 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 						.where(TrayekWaypointDao.Properties.Point.eq(acTo
 								.getText().toString())).unique();
 
-				doSearch(waypointFrom, waypointTo);
+				new SearchTask().execute(waypointFrom, waypointTo);
 			} else {
 				Toast.makeText(getActivity(), "Invalid input parameter",
 						Toast.LENGTH_LONG).show();
@@ -159,32 +160,56 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 		return qb.list().size() > 0;
 	}
 
-	public void doSearch(TrayekWaypoint from, TrayekWaypoint to) {
-		List<TrayekRouteDetail> listRouteDetails = Routing.getRouteOne(
-				from.getId(), to.getId());
-		if (listRouteDetails.size() == 0) {
-			// try route 2
-			listRouteDetails = Routing
-					.getRouteTwoIbun(from.getId(), to.getId());
+	private class SearchTask extends
+			AsyncTask<TrayekWaypoint, Void, List<TrayekRouteDetail>> {
+		ProgressDialog dialog;
+
+		@Override
+		protected void onPreExecute() {
+			dialog = ProgressDialog.show(getActivity(), null,
+					"Searching route", true, true);
 		}
-		mRouteList.clear();
-		FormattedResult currentResult = null;
-		for (TrayekRouteDetail routeDetail : listRouteDetails) {
-			if (currentResult != null
-					&& routeDetail.getIdRuteTrayek() == currentResult.idRuteTrayek) {
-				currentResult.turun = routeDetail.getIdWaypoint();
-			} else {
-				currentResult = new FormattedResult();
-				currentResult.idRuteTrayek = routeDetail.getIdRuteTrayek();
-				currentResult.naik = routeDetail.getIdWaypoint();
-				currentResult.turun = routeDetail.getIdWaypoint();
-				mRouteList.add(currentResult);
+
+		@Override
+		protected List<TrayekRouteDetail> doInBackground(
+				TrayekWaypoint... params) {
+			TrayekWaypoint from = params[0];
+			TrayekWaypoint to = params[1];
+			List<TrayekRouteDetail> listRouteDetails = Routing.getRouteOne(
+					from.getId(), to.getId());
+			if (listRouteDetails.size() == 0) {
+				// try route 2
+				listRouteDetails = Routing.getRouteTwoIbun(from.getId(),
+						to.getId());
 			}
+			return listRouteDetails;
 		}
-		for (FormattedResult result: mRouteList) {
-			result.updateStringValues();
+
+		@Override
+		protected void onPostExecute(List<TrayekRouteDetail> listRouteDetails) {
+			dialog.cancel();
+			mRouteList.clear();
+			FormattedResult currentResult = null;
+			for (TrayekRouteDetail routeDetail : listRouteDetails) {
+				//contoh ambil trayek name
+				String trayekName = routeDetail.getTrayekRoute().getTrayek()
+						.getNamaTrayek();
+				if (currentResult != null
+						&& routeDetail.getIdRuteTrayek() == currentResult.idRuteTrayek) {
+					currentResult.turun = routeDetail.getIdWaypoint();
+				} else {
+					currentResult = new FormattedResult();
+					currentResult.idRuteTrayek = routeDetail.getIdRuteTrayek();
+					currentResult.naik = routeDetail.getIdWaypoint();
+					currentResult.turun = routeDetail.getIdWaypoint();
+					mRouteList.add(currentResult);
+				}
+			}
+			for (FormattedResult result : mRouteList) {
+				result.updateStringValues();
+			}
+			mAdapter.notifyDataSetChanged();
 		}
-		mAdapter.notifyDataSetChanged();
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

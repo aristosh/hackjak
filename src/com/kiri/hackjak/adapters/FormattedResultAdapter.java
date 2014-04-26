@@ -17,14 +17,14 @@ import com.kiri.hackjak.R;
 import com.kiri.hackjak.RouteMapActivity;
 import com.kiri.hackjak.db.TrayekRouteDetail;
 
-public class ResultAdapter extends ArrayAdapter<TrayekRouteDetail> {
-	private List<TrayekRouteDetail> mList;
+public class FormattedResultAdapter extends ArrayAdapter<FormattedResult> {
+	private List<FormattedResult> mList;
 	private Context mContext;
 	private int mResource;
 	private LayoutInflater mInflater;
 
-	public ResultAdapter(Context context, int resource,
-			List<TrayekRouteDetail> list) {
+	public FormattedResultAdapter(Context context, int resource,
+			List<FormattedResult> list) {
 		super(context, resource, list);
 		this.mContext = context;
 		this.mResource = resource;
@@ -40,7 +40,7 @@ public class ResultAdapter extends ArrayAdapter<TrayekRouteDetail> {
 			convertView = mInflater.inflate(mResource, null);
 		}
 
-		TrayekRouteDetail step = mList.get(position);
+		FormattedResult step = mList.get(position);
 
 		TextView textNoTrayek = (TextView) convertView
 				.findViewById(R.id.textNoTrayek);
@@ -49,8 +49,8 @@ public class ResultAdapter extends ArrayAdapter<TrayekRouteDetail> {
 		ImageView imageMap = (ImageView) convertView
 				.findViewById(R.id.imageMap);
 
-		textNoTrayek.setText(step.getIdRuteTrayek() + "");
-		textResult.setText(step.getIdWaypoint() + "");
+		textNoTrayek.setText(step.getTitle() );
+		textResult.setText(step.getDetail());
 		imageMap.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

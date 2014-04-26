@@ -23,7 +23,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.kiri.hackjak.adapters.ResultAdapter;
+import com.kiri.hackjak.adapters.FormattedResult;
+import com.kiri.hackjak.adapters.FormattedResultAdapter;
 import com.kiri.hackjak.adapters.WaypointAdapter;
 import com.kiri.hackjak.apis.ApiGrabberHelper;
 import com.kiri.hackjak.db.TrayekRouteDetail;
@@ -44,7 +45,8 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 	ApiGrabberHelper hackJakApiHelper;
 
 	// sorry for doing this
-	public List<TrayekRouteDetail> mRouteList = new ArrayList<TrayekRouteDetail>();
+	// it's okay
+	public List<FormattedResult> mRouteList = new ArrayList<FormattedResult>();
 
 	// FROM ROUTE LIST
 	private enum QuickReturnState {
@@ -63,7 +65,7 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 	private int mTopOfLastFirstVisibleItem = 0;
 
 	private ImageButton mButtonNavigate;
-	private ArrayAdapter<TrayekRouteDetail> mAdapter;
+	private ArrayAdapter<FormattedResult> mAdapter;
 	private ListView mListView;
 
 	/**
@@ -119,7 +121,7 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 			mButtonNavigate.setVisibility(View.VISIBLE);
 		}
 
-		mAdapter = new ResultAdapter(getActivity(), R.layout.cell_route_list,
+		mAdapter = new FormattedResultAdapter(getActivity(), R.layout.cell_route_list,
 				mRouteList);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnScrollListener(this);
@@ -167,8 +169,21 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 	public void doSearch(TrayekWaypoint from, TrayekWaypoint to) {
 		List<TrayekRouteDetail> listRouteDetails = Routing.getRouteOne(
 				from.getId(), to.getId());
+		
+		
 		mRouteList.clear();
-		mRouteList.addAll(listRouteDetails);
+		FormattedResult currentResult = null;
+		for (TrayekRouteDetail routeDetail: listRouteDetails) {
+			if (currentResult != null && routeDetail.getIdRuteTrayek() == currentResult.idRuteTrayek) {
+				currentResult.turun = "" + routeDetail.getIdWaypoint();
+			} else {
+				currentResult = new FormattedResult();
+				currentResult.idRuteTrayek = routeDetail.getIdRuteTrayek();
+				currentResult.naik = "" + routeDetail.getIdWaypoint();
+				currentResult.turun = "" + routeDetail.getIdWaypoint();
+				mRouteList.add(currentResult);
+			}
+		}
 		mAdapter.notifyDataSetChanged();
 	}
 

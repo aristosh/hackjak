@@ -15,16 +15,16 @@ import android.widget.TextView;
 
 import com.kiri.hackjak.R;
 import com.kiri.hackjak.RouteMapActivity;
-import com.kiri.hackjak.model.SearchResult;
-import com.kiri.hackjak.model.SearchResult.Step;
+import com.kiri.hackjak.db.TrayekRouteDetail;
 
-public class ResultAdapter extends ArrayAdapter<SearchResult.Step> {
-	private List<SearchResult.Step> mList;
+public class ResultAdapter extends ArrayAdapter<TrayekRouteDetail> {
+	private List<TrayekRouteDetail> mList;
 	private Context mContext;
 	private int mResource;
 	private LayoutInflater mInflater;
 
-	public ResultAdapter(Context context, int resource, List<SearchResult.Step> list) {
+	public ResultAdapter(Context context, int resource,
+			List<TrayekRouteDetail> list) {
 		super(context, resource, list);
 		this.mContext = context;
 		this.mResource = resource;
@@ -40,7 +40,7 @@ public class ResultAdapter extends ArrayAdapter<SearchResult.Step> {
 			convertView = mInflater.inflate(mResource, null);
 		}
 
-		Step step = mList.get(position);
+		TrayekRouteDetail step = mList.get(position);
 
 		TextView textNoTrayek = (TextView) convertView
 				.findViewById(R.id.textNoTrayek);
@@ -49,8 +49,8 @@ public class ResultAdapter extends ArrayAdapter<SearchResult.Step> {
 		ImageView imageMap = (ImageView) convertView
 				.findViewById(R.id.imageMap);
 
-		textNoTrayek.setText(step.track.noTrayek);
-		textResult.setText(step.track.namaSingkat);
+		textNoTrayek.setText(step.getIdRuteTrayek() + "");
+		textResult.setText(step.getIdWaypoint() + "");
 		imageMap.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

@@ -16,6 +16,16 @@ public class Routing {
 				+ ") as t2, TRAYEK_ROUTE_DETAIL as t3 where t1.id_rute_trayek = t2.id_rute_trayek and t3.id_rute_trayek = t2.id_rute_trayek and t3.urut >= t1.urut and t3.urut <= t2.urut order by id_rute_trayek, urut";
 		List<TrayekRouteDetail> list = KiriApp.getTrayekRouteDetailDao()
 				.loadAllDeepFromCursor(KiriApp.getDb().rawQuery(sql, null));
+		
+		// Remove duplicate result
+		for (int i = 1; i < list.size(); i++) {
+			if (list.get(i).getIdWaypoint() == fromWaypointId) {
+				while (list.size() > i) {
+					list.remove(i);
+				}
+				break;
+			}
+		}
 		return list;
 	}
 

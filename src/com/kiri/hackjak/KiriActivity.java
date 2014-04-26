@@ -13,8 +13,10 @@ import com.kiri.hackjak.apis.ApiGrabberHelper;
 public class KiriActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
 	public static final int SECTION_TRAYEK = 0;
-	public static final int SECTION_CONTRIBUTE = 1;
-	public static final int SECTION_ABOUT = 2;
+	public static final int SECTION_TAXI = 1;
+	public static final int SECTION_COMMUTER = 2;
+	public static final int SECTION_CONTRIBUTE = 3;
+	public static final int SECTION_ABOUT = 4;
 
 	ApiGrabberHelper hackJakApiHelper;
 
@@ -56,6 +58,13 @@ public class KiriActivity extends ActionBarActivity implements
 							TrayekFragment.newInstance(SECTION_TRAYEK))
 					.commit();
 			break;
+		case SECTION_TAXI:
+			fragmentManager
+					.beginTransaction()
+					.replace(R.id.container,
+							TaxiListFragment.newInstance(SECTION_TAXI))
+					.commit();
+			break;
 		case SECTION_ABOUT:
 			fragmentManager
 					.beginTransaction()
@@ -82,6 +91,9 @@ public class KiriActivity extends ActionBarActivity implements
 		switch (number) {
 		case SECTION_TRAYEK:
 			mTitle = getString(R.string.title_section_trayek);
+			break;
+		case SECTION_TAXI:
+			mTitle = getString(R.string.title_section_taxi);
 			break;
 		case SECTION_CONTRIBUTE:
 			mTitle = getString(R.string.title_section_contribute);

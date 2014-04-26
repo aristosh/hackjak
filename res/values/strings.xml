@@ -9,11 +9,14 @@
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_notification_receiver">NotificationReceiverActivity</string>
     <string name="title_activity_kiri">KIRI HackJak</string>
-    <string name="title_section_trayek">Route Search</string>
+    <string name="title_section_trayek">Bus / Angkot</string>
+    <string name="title_section_taxi">Taxi</string>
+    <string name="title_section_commuter">Commuter (Coming Soon)</string>
     <string name="title_section_contribute">Data Contribution</string>
     <string name="title_section_update">Data Update</string>
     <string name="title_section_about">About KIRI HackJak</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
+
 </resources>

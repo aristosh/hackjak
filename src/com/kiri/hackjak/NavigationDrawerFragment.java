@@ -107,6 +107,8 @@ public class NavigationDrawerFragment extends Fragment {
 		mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
 				.getThemedContext(), R.layout.row_nav_drawer, R.id.text,
 				new String[] { getString(R.string.title_section_trayek),
+						getString(R.string.title_section_taxi),
+						getString(R.string.title_section_commuter),
 						getString(R.string.title_section_contribute),
 						getString(R.string.title_section_about), }));
 		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);

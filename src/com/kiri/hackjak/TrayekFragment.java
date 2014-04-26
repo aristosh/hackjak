@@ -7,6 +7,7 @@ import java.util.List;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -197,6 +198,7 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 			dialog.cancel();
 			mRouteList.clear();
 			FormattedResult currentResult = null;
+
 			TrayekRouteDetail prev = null;
 			for (int i = 0; i < listRouteDetails.size(); i++) {
 				TrayekRouteDetail routeDetail = listRouteDetails.get(i);
@@ -292,5 +294,12 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		if (scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
 			mTouchingState = ToucingState.TOUCHING;
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		((KiriActivity) activity).onSectionAttached(getArguments().getInt(
+				ARG_SECTION_NUMBER));
 	}
 }

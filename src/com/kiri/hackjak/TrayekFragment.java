@@ -6,6 +6,7 @@ import java.util.List;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -191,7 +192,7 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 			mRouteList.clear();
 			FormattedResult currentResult = null;
 			for (TrayekRouteDetail routeDetail : listRouteDetails) {
-				//contoh ambil trayek name
+				// contoh ambil trayek name
 				String trayekName = routeDetail.getTrayekRoute().getTrayek()
 						.getNamaTrayek();
 				if (currentResult != null
@@ -269,5 +270,12 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		if (scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
 			mTouchingState = ToucingState.TOUCHING;
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		((KiriActivity) activity).onSectionAttached(getArguments().getInt(
+				ARG_SECTION_NUMBER));
 	}
 }

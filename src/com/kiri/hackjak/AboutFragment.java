@@ -18,14 +18,16 @@ import android.webkit.WebView;
  */
 public class AboutFragment extends Fragment {
 	private static final String ARG_SECTION_NUMBER = "section_number";
+	private static final String ARG_FILENAME = "filename";
 
 	/**
 	 * Returns a new instance of this fragment for the given section number.
 	 */
-	public static AboutFragment newInstance(int sectionNumber) {
+	public static AboutFragment newInstance(int sectionNumber, String fileName) {
 		AboutFragment fragment = new AboutFragment();
 		Bundle args = new Bundle();
 		args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+		args.putString(ARG_FILENAME, fileName);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -36,13 +38,15 @@ public class AboutFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_about, container,
+		View rootView = inflater.inflate(R.layout.fragment_webview, container,
 				false);
 		WebView webView = (WebView) rootView.findViewById(R.id.aboutWebView);
 		try {
-			;
-			InputStream is = getActivity().getAssets().open(getArguments().getInt(ARG_SECTION_NUMBER) + "_en.html");
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			String fileName = getArguments().getString(ARG_FILENAME);
+			InputStream is = getActivity().getAssets().open(
+					fileName + "_en.html");
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(is));
 			StringBuilder sb = new StringBuilder();
 			String line;
 			while ((line = reader.readLine()) != null) {

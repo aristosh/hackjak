@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Queue;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 
 import com.kiri.hackjak.KiriApp;
 import com.kiri.hackjak.apis.TrayekAllApi.TrayekApiDao;
@@ -33,17 +35,38 @@ public class ApiGrabberHelper {
 	}
 
 	public void grabDataFromApi() {
-		dialog = new ProgressDialog(mContext);
-		dialog.setMessage("Preparing data for first time...");
-		dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		dialog.setIndeterminate(false);
+		// Alert dialog
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				mContext);
+		alertDialogBuilder
+				.setMessage("Do you want to update data? You must wait until it is complete");
+		alertDialogBuilder.setPositiveButton("Yes",
+				new DialogInterface.OnClickListener() {
 
-		// cek, jika masih kosong, ambil dari server
-		if (KiriApp.getTrayekDao().count() == 0) {
-			// call api
-			trayekAllApi = new TrayekAllApi(mContext, trayekAllApiListener);
-			trayekAllApi.callApi(trayekApiPage);
-		}
+					@Override
+					public void onClick(DialogInterface d, int which) {
+						dialog = new ProgressDialog(mContext);
+						dialog.setMessage("Loading");
+						dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+						dialog.setIndeterminate(false);
+						// delete db
+						KiriApp.getTrayekDao().deleteAll();
+						KiriApp.getTrayekRouteDao().deleteAll();
+						KiriApp.getTrayekRouteDetailDao().deleteAll();
+						KiriApp.getTrayekWaypointDao().deleteAll();
+						// call api
+						trayekAllApi = new TrayekAllApi(mContext,
+								trayekAllApiListener);
+						trayekAllApi.callApi(trayekApiPage);
+					}
+				});
+		alertDialogBuilder.setNegativeButton("Not now",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+		alertDialogBuilder.create().show();
 	}
 	
 	private void insertDataToDb() {

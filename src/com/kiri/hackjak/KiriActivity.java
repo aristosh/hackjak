@@ -8,12 +8,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.kiri.hackjak.apis.ApiGrabberHelper;
+
 public class KiriActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
 	public static final int SECTION_TRAYEK = 0;
 	public static final int SECTION_CONTRIBUTE = 1;
-	public static final int SECTION_UPDATE = 2;
-	public static final int SECTION_ABOUT = 3;
+	public static final int SECTION_ABOUT = 2;
+
+	ApiGrabberHelper hackJakApiHelper;
 
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
@@ -57,22 +60,17 @@ public class KiriActivity extends ActionBarActivity implements
 			fragmentManager
 					.beginTransaction()
 					.replace(R.id.container,
-							AboutFragment.newInstance(SECTION_ABOUT)).commit();
-			break;
-		case SECTION_UPDATE:
-			// TODO update date
-			fragmentManager
-					.beginTransaction()
-					.replace(R.id.container,
-							AboutFragment.newInstance(SECTION_UPDATE)).commit();
+							AboutFragment.newInstance(SECTION_ABOUT, "about"))
+					.commit();
 			break;
 		case SECTION_CONTRIBUTE:
 			// TODO contribute fragment
 			fragmentManager
 					.beginTransaction()
-					.replace(R.id.container,
-							AboutFragment.newInstance(SECTION_CONTRIBUTE))
-					.commit();
+					.replace(
+							R.id.container,
+							AboutFragment.newInstance(SECTION_CONTRIBUTE,
+									"contribute")).commit();
 			break;
 
 		default:
@@ -89,8 +87,6 @@ public class KiriActivity extends ActionBarActivity implements
 			mTitle = getString(R.string.title_section_contribute);
 			break;
 		case SECTION_ABOUT:
-			mTitle = getString(R.string.title_section_about);
-		case SECTION_UPDATE:
 			mTitle = getString(R.string.title_section_about);
 			break;
 		}
@@ -122,7 +118,10 @@ public class KiriActivity extends ActionBarActivity implements
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_update) {
+			// get data from API
+			hackJakApiHelper = new ApiGrabberHelper(this);
+			hackJakApiHelper.grabDataFromApi();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

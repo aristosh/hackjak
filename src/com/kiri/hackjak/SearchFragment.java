@@ -14,8 +14,6 @@ import com.kiri.hackjak.adapters.WaypointAdapter;
 import com.kiri.hackjak.apis.ApiGrabberHelper;
 import com.kiri.hackjak.model.RoutingEngine;
 import com.kiri.hackjak.model.RoutingEngineFactory;
-import com.kiri.hackjak.model.SQLiteRouteWorldFactory;
-import com.kiri.hackjak.model.SearchResult;
 import com.kiri.hackjak.model.WaypointModel;
 import com.kiri.hackjak.sqlite.TrayekWaypoint;
 import com.kiri.hackjak.sqlite.TrayekWaypointDao;
@@ -23,8 +21,9 @@ import com.kiri.hackjak.sqlite.TrayekWaypointDao;
 import de.greenrobot.dao.query.QueryBuilder;
 
 public class SearchFragment extends Fragment implements OnClickListener {
-//	private static final String[] TEXT_AUTOCOMPLETE = new String[] { "Belgium",
-//			"France", "Italy", "Germany", "Spain" };
+	// private static final String[] TEXT_AUTOCOMPLETE = new String[] {
+	// "Belgium",
+	// "France", "Italy", "Germany", "Spain" };
 
 	AutoCompleteTextView acFrom;
 	AutoCompleteTextView acTo;
@@ -32,6 +31,12 @@ public class SearchFragment extends Fragment implements OnClickListener {
 
 	ApiGrabberHelper hackJakApiHelper;
 	RoutingEngine router;
+
+	TrayekFragment mTrayekFragment;
+
+	public void setParentFragment(TrayekFragment fragment) {
+		mTrayekFragment = fragment;
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,12 +46,14 @@ public class SearchFragment extends Fragment implements OnClickListener {
 
 		acFrom = (AutoCompleteTextView) rootView.findViewById(R.id.acEditFrom);
 		acTo = (AutoCompleteTextView) rootView.findViewById(R.id.acEditTo);
-		btnSearch = (Button)rootView.findViewById(R.id.btnSearch);
+		btnSearch = (Button) rootView.findViewById(R.id.btnSearch);
 
 		// get data from API
 		hackJakApiHelper = new ApiGrabberHelper(getActivity());
-		//hackJakApiHelper.grabDataFromApi();
-		
+		// hackJakApiHelper.grabDataFromApi();
+
+		// TODO lambat di bagian ini , mohon dituning. Mungkin object bisa
+		// dipindahkan ke KiriActivity
 		// get data either from CSV or SQLite
 		RoutingEngineFactory ref = new RoutingEngineFactory(getActivity());
 		router = ref.createRoutingEngine();
@@ -57,28 +64,32 @@ public class SearchFragment extends Fragment implements OnClickListener {
 		acTo.setAdapter(adapter);
 
 		btnSearch.setOnClickListener(this);
-		
+
 		return rootView;
 	}
 
 	@Override
 	public void onClick(View v) {
-		
-		if(validateSearchParameter(acFrom.getText().toString()) && validateSearchParameter(acTo.getText().toString())) {
-			WaypointModel from = router.getWaypointFromString(acFrom.getText().toString());
-			WaypointModel to = router.getWaypointFromString(acTo.getText().toString());
-			
-			MainActivity.mRouteList = router.findRoute(from, to);
-			
-			((MainActivity)getActivity()).displayRouteList();
+
+		if (validateSearchParameter(acFrom.getText().toString())
+				&& validateSearchParameter(acTo.getText().toString())) {
+			WaypointModel from = router.getWaypointFromString(acFrom.getText()
+					.toString());
+			WaypointModel to = router.getWaypointFromString(acTo.getText()
+					.toString());
+
+			TrayekFragment.mRouteList = router.findRoute(from, to);
+
+			mTrayekFragment.displayRouteList();
 		} else {
-			Toast.makeText(getActivity(), "Invalid input parameter", Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "Invalid input parameter",
+					Toast.LENGTH_LONG).show();
 		}
 	}
-		
+
 	private boolean validateSearchParameter(String param) {
-		QueryBuilder<TrayekWaypoint> qb = KiriApp
-				.getTrayekWaypointDao().queryBuilder();
+		QueryBuilder<TrayekWaypoint> qb = KiriApp.getTrayekWaypointDao()
+				.queryBuilder();
 		qb.where(TrayekWaypointDao.Properties.Point.like(param));
 		return qb.list().size() > 0;
 	}

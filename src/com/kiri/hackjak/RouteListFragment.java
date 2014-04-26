@@ -1,6 +1,5 @@
 package com.kiri.hackjak;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.animation.AnimatorSet;
@@ -59,7 +58,7 @@ public class RouteListFragment extends ListFragment implements AbsListView.OnScr
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		mListView = getListView();
 		
-		mRouteList = MainActivity.mRouteList;
+		mRouteList = TrayekFragment.mRouteList;
 		
 		mButtonNavigate.setVisibility(View.GONE);
 		if(mRouteList.size() > 0) {

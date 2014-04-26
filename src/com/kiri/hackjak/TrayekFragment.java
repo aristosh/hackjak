@@ -41,8 +41,6 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 	AutoCompleteTextView acTo;
 	Button btnSearch;
 
-	ApiGrabberHelper hackJakApiHelper;
-
 	// sorry for doing this
 	public List<TrayekRouteDetail> mRouteList = new ArrayList<TrayekRouteDetail>();
 
@@ -91,10 +89,6 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 		acFrom = (AutoCompleteTextView) rootView.findViewById(R.id.acEditFrom);
 		acTo = (AutoCompleteTextView) rootView.findViewById(R.id.acEditTo);
 		btnSearch = (Button) rootView.findViewById(R.id.btnSearch);
-
-		// get data from API
-		hackJakApiHelper = new ApiGrabberHelper(getActivity());
-		hackJakApiHelper.grabDataFromApi();
 
 		WaypointAdapter adapter = new WaypointAdapter(getActivity(),
 				android.R.layout.simple_dropdown_item_1line);

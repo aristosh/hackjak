@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.kiri.hackjak.R;
 
 public class RouteMapActivity extends ActionBarActivity {
 
@@ -40,9 +39,6 @@ public class RouteMapActivity extends ActionBarActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -50,25 +46,26 @@ public class RouteMapActivity extends ActionBarActivity {
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
-	
-		
+
 		public PlaceholderFragment() {
 		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_route_map, container, false);
+			View rootView = inflater.inflate(R.layout.fragment_route_map,
+					container, false);
 			return rootView;
 		}
-		
+
 		@Override
 		public void onViewCreated(View view, Bundle savedInstanceState) {
-			mMapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.google_map);
+			mMapFragment = (SupportMapFragment) getFragmentManager()
+					.findFragmentById(R.id.google_map);
 			mMap = mMapFragment.getMap();
 			mMap.setMyLocationEnabled(true);
 		}
-		
+
 		private SupportMapFragment mMapFragment;
 		private GoogleMap mMap;
 	}

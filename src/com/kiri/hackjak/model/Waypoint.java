@@ -1,7 +1,7 @@
 package com.kiri.hackjak.model;
 
 public class Waypoint implements Comparable<Waypoint> {
-	private String name;
+	String name;
 	
 	public Waypoint(String name) {
 		this.name = name;

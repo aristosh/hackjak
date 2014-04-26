@@ -1,19 +1,18 @@
 package com.kiri.hackjak.model;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class CSVRouteWorldFactory {
-	public static RoutingEngine createFromCSV(File csvFile) throws IOException {
+	public static RoutingEngine createFromCSV(InputStream csvInputStream) throws IOException {
 		RoutingEngine newWorld = new RoutingEngine();
-		BufferedReader reader = new BufferedReader(new FileReader(csvFile));
-		Map<String, Waypoint> availableWaypoints = new TreeMap<String, Waypoint>();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(csvInputStream));
 		String line;
 		int lineNumber = 0;
 		while ((line = reader.readLine()) != null) {
@@ -32,31 +31,33 @@ public class CSVRouteWorldFactory {
 			}
 			
 			// Add departing trayek
-			newWorld.trayeks.add(generateTrayek(columns[0], columns[1], columns[2], columns[3], stringToWaypoints(availableWaypoints, columns[8])));
+			newWorld.trayeks.add(generateTrayek(columns[0], columns[1], columns[2], columns[3], columns[8], newWorld.availableWaypoints));
 			// Add returning trayek
-			newWorld.trayeks.add(generateTrayek(columns[0], columns[1], columns[2], columns[3], stringToWaypoints(availableWaypoints, columns[9])));
+			newWorld.trayeks.add(generateTrayek(columns[0], columns[1], columns[2], columns[3], columns[9], newWorld.availableWaypoints));
 			// Add available waypoints
-			for (String key: availableWaypoints.keySet()) {
-				newWorld.waypoints.add(availableWaypoints.get(key));
+			for (String key: newWorld.availableWaypoints.keySet()) {
+				newWorld.waypoints.add(newWorld.availableWaypoints.get(key));
 			}
 		}
 		reader.close();
+		newWorld.graph = new Graph(newWorld);
 		return newWorld;
 	}
 	
-	private static Trayek generateTrayek(String jenisAngkutan, String jenisTrayek, String noTrayek, String namaTrayek, List<Waypoint> waypoints) {
+	private static Trayek generateTrayek(String jenisAngkutan, String jenisTrayek, String noTrayek, String namaTrayek, String dashSeparatedWaypoints, Map<String, Waypoint> availableWaypoints) {
 		Trayek newTrayek = new Trayek();
+		List<Node> nodes = stringToNodes(availableWaypoints, newTrayek, dashSeparatedWaypoints);
 		newTrayek.kategori = jenisTrayek == "-" ? jenisAngkutan : jenisTrayek;
-		newTrayek.namaSingkat = String.format("%s %s (arah %s)", noTrayek, namaTrayek, waypoints.get(waypoints.size() - 1));
-		newTrayek.route = waypoints;
+		newTrayek.namaSingkat = String.format("%s %s (arah %s)", noTrayek, namaTrayek, nodes.get(nodes.size() - 1).waypoint.toString());
+		newTrayek.route = nodes;
 		return newTrayek;
 	}
 	
-	private static List<Waypoint> stringToWaypoints(Map<String, Waypoint> availableWaypoints, String dashSeparatedText) {
+	private static List<Node> stringToNodes(Map<String, Waypoint> availableWaypoints, Trayek owner, String dashSeparatedText) {
 		String[] roadsText = dashSeparatedText.split(" *-+ *");
-		List<Waypoint> returnedRoads = new ArrayList<Waypoint>(roadsText.length);
+		List<Node> returnedRoads = new ArrayList<Node>();
 		for (String roadText: roadsText) {
-			returnedRoads.add(createOrReuseWaypoint(availableWaypoints, roadText));
+			returnedRoads.add(new Node(createOrReuseWaypoint(availableWaypoints, roadText), owner));
 		}
 		return returnedRoads;
 	}

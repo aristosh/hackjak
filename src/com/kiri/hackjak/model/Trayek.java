@@ -6,7 +6,7 @@ public class Trayek {
 	
 	public String kategori;	
 	public String namaSingkat;	
-	public List<Waypoint> route;
+	public List<Node> route;
 
 	// optional FIXME nanti diganti List<LatLng>
 	public List<String> polylineData;

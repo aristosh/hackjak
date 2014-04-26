@@ -20,10 +20,6 @@ import com.kiri.hackjak.model.WaypointModel;
 import de.greenrobot.dao.query.QueryBuilder;
 
 public class SearchFragment extends Fragment implements OnClickListener {
-	// private static final String[] TEXT_AUTOCOMPLETE = new String[] {
-	// "Belgium",
-	// "France", "Italy", "Germany", "Spain" };
-
 	AutoCompleteTextView acFrom;
 	AutoCompleteTextView acTo;
 	Button btnSearch;
@@ -81,7 +77,7 @@ public class SearchFragment extends Fragment implements OnClickListener {
 
 			mTrayekFragment.displayRouteList();
 		} else {
-			Toast.makeText(getActivity(), "Invalid input parameter",
+			Toast.makeText(getActivity(), "Invalid input parameter. Select from the list",
 					Toast.LENGTH_LONG).show();
 		}
 	}

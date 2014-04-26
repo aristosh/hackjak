@@ -23,6 +23,8 @@ public class FormattedResult {
 	public List<Long> pointId;
 	
 	private String noTrayekString;
+	private String jenisAngkutanString;
+	private String jenisTrayekString;
 	private List<String> pointString;
 	
 	public FormattedResult() {
@@ -37,6 +39,8 @@ public class FormattedResult {
 		QueryBuilder<Trayek> tqb = KiriApp.getTrayekDao().queryBuilder();
 		tqb.where(TrayekDao.Properties._id.eq(idTrayek));
 		noTrayekString = tqb.list().get(0).getNoTrayek();
+		jenisAngkutanString = tqb.list().get(0).getJenisAngkutan();
+		jenisTrayekString = tqb.list().get(0).getJenisTrayek();
 		
 		for (int i = 0; i <pointId.size(); i++) {
 			QueryBuilder<TrayekWaypoint> qb = KiriApp.getTrayekWaypointDao().queryBuilder();
@@ -62,13 +66,23 @@ public class FormattedResult {
 		} else if(type == Type.ALIGHT) {
 			return String.format("Alight from %s at %s", noTrayekString, pointString.get(0));
 		} else {
-			String detail = "Keep riding at ";
+			String detail = "Keep riding ";
 			for(int i = 0; i < pointId.size(); i++) {
 				detail += String.format("%s, ", pointString.get(i));
 			}
-			detail = detail.substring(0, detail.length() - 1);
+			detail = detail.substring(0, detail.length() - 2);
 			return detail;
 		}
 	}
 
+	public String getJenisAngkutanString() {
+		return jenisAngkutanString;
+	}
+
+	public String getJenisTrayekString() {
+		return jenisTrayekString;
+	}
+	public String getNoTrayekString() {
+		return noTrayekString;
+	}
 }

@@ -18,5 +18,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
-
+    <string name="path_not_available">Path is not available. Please contribute at https://angkot.web.id</string>
+    
 </resources>

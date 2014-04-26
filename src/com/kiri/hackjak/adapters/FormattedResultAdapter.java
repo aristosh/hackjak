@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.kiri.hackjak.R;
 import com.kiri.hackjak.RouteMapActivity;
-import com.kiri.hackjak.db.TrayekRouteDetail;
 
 public class FormattedResultAdapter extends ArrayAdapter<FormattedResult> {
 	private List<FormattedResult> mList;
@@ -51,13 +50,23 @@ public class FormattedResultAdapter extends ArrayAdapter<FormattedResult> {
 
 		textNoTrayek.setText(step.getTitle() );
 		textResult.setText(step.getDetail());
-		imageMap.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(mContext, RouteMapActivity.class);
-				mContext.startActivity(intent);
-			}
-		});
+
+		final Intent intent = new Intent(mContext, RouteMapActivity.class);
+		intent.putExtra(RouteMapActivity.ARG_JENIS_ANGKUTAN, step.getJenisAngkutanString());
+		intent.putExtra(RouteMapActivity.ARG_JENIS_TRAYEK, step.getJenisTrayekString());
+		intent.putExtra(RouteMapActivity.ARG_NO_TRAYEK, step.getNoTrayekString());
+		if (RouteMapActivity.checkAvailability(this.getContext(), intent)) {
+			imageMap.setVisibility(View.VISIBLE);
+			// Note: the imageMap is to small to click -_- any alternative?
+			convertView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mContext.startActivity(intent);
+				}
+			});
+		} else {
+			imageMap.setVisibility(View.GONE);
+		}
 
 		return convertView;
 	}

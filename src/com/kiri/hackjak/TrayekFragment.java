@@ -1,5 +1,6 @@
 package com.kiri.hackjak;
 
+import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -148,6 +149,12 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 			}
 			break;
 
+		case R.id.buttonNavigate:
+			 Navigation navigation = Navigation.getInstance();
+			 navigation.initiateRoutes(getActivity(), mRouteList);
+			 navigation.redraw();
+			 Toast.makeText(getActivity(), "Hide to notification bar", Toast.LENGTH_SHORT).show();
+			 getActivity().moveTaskToBack(true);
 		default:
 			break;
 		}
@@ -190,24 +197,40 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 			dialog.cancel();
 			mRouteList.clear();
 			FormattedResult currentResult = null;
-			for (TrayekRouteDetail routeDetail : listRouteDetails) {
-				//contoh ambil trayek name
-				String trayekName = routeDetail.getTrayekRoute().getTrayek()
-						.getNamaTrayek();
-				if (currentResult != null
-						&& routeDetail.getIdRuteTrayek() == currentResult.idRuteTrayek) {
-					currentResult.turun = routeDetail.getIdWaypoint();
-				} else {
+			TrayekRouteDetail prev = null;
+			for (int i = 0; i < listRouteDetails.size(); i++) {
+				TrayekRouteDetail routeDetail = listRouteDetails.get(i);
+				
+				TrayekRouteDetail next = null;
+				if(i < listRouteDetails.size() - 1) next = listRouteDetails.get(i + 1);
+				
+				if(prev == null || prev.getIdRuteTrayek() != routeDetail.getIdRuteTrayek()) {
+					// BOARDING
 					currentResult = new FormattedResult();
 					currentResult.idRuteTrayek = routeDetail.getIdRuteTrayek();
-					currentResult.naik = routeDetail.getIdWaypoint();
-					currentResult.turun = routeDetail.getIdWaypoint();
+					currentResult.type = FormattedResult.Type.BOARD;
+					
+					mRouteList.add(currentResult);
+				} else if(next == null || next.getIdRuteTrayek() != routeDetail.getIdRuteTrayek()) {
+					// ALIGHTING
+					currentResult = new FormattedResult();
+					currentResult.idRuteTrayek = routeDetail.getIdRuteTrayek();
+					currentResult.type = FormattedResult.Type.ALIGHT;
+					
+					mRouteList.add(currentResult);
+				} else if(currentResult.type == FormattedResult.Type.BOARD){
+					// ON GOING
+					currentResult = new FormattedResult();
+					currentResult.idRuteTrayek = routeDetail.getIdRuteTrayek();
+					currentResult.type = FormattedResult.Type.OTW;
+					
 					mRouteList.add(currentResult);
 				}
+				
+				currentResult.pointId.add(routeDetail.getIdWaypoint());
+				prev = routeDetail;
 			}
-			for (FormattedResult result : mRouteList) {
-				result.updateStringValues();
-			}
+			
 			mAdapter.notifyDataSetChanged();
 		}
 	}

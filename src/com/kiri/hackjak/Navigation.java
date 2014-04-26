@@ -2,6 +2,7 @@ package com.kiri.hackjak;
 
 import java.util.List;
 
+import com.kiri.hackjak.adapters.FormattedResult;
 import com.kiri.hackjak.model.SearchResult;
 
 import android.app.NotificationManager;
@@ -20,7 +21,7 @@ public class Navigation {
 	private static Navigation mInstance;
 	
 	private Context mContext;
-	private List<SearchResult.Step> mRoutes;
+	private List<FormattedResult> mRoutes;
 	private int mRouteIndex;
 	
 	private NotificationManager notificationManager;
@@ -30,7 +31,7 @@ public class Navigation {
 		return (mInstance == null ? (mInstance = new Navigation()) : mInstance);
 	}
 	
-	public void initiateRoutes(Context context, List<SearchResult.Step> routes) {
+	public void initiateRoutes(Context context, List<FormattedResult> routes) {
 		mContext = context;
 		mRoutes = routes;
 		mRouteIndex = 0;
@@ -40,17 +41,17 @@ public class Navigation {
 		notifyBuilder = new NotificationCompat.Builder(mContext);
 	}
 	
-	public SearchResult.Step actionPrev() {
+	public FormattedResult actionPrev() {
 		if(mRouteIndex > 0)  mRouteIndex--;
 		return mRoutes.get(mRouteIndex);
 	}
 	
-	public SearchResult.Step actionNext() {
+	public FormattedResult actionNext() {
 		if(mRouteIndex < mRoutes.size() - 1)  mRouteIndex++;
 		return mRoutes.get(mRouteIndex);
 	}
 	
-	public SearchResult.Step getCurrentRoute() {
+	public FormattedResult getCurrentRoute() {
 		return mRoutes.get(mRouteIndex);
 	}
 	
@@ -72,8 +73,9 @@ public class Navigation {
 		PendingIntent pIntentStop = PendingIntent.getBroadcast(mContext, 2, intentStop, PendingIntent.FLAG_UPDATE_CURRENT);
 		
 		notifyBuilder
-			.setContentTitle("Navigasi : " + Integer.toString(mRouteIndex))
-			.setContentText(getCurrentRoute().track.noTrayek)
+			//.setContentTitle("Navigasi : " + Integer.toString(mRouteIndex))
+			.setContentTitle(getCurrentRoute().getTitle())
+			.setContentText(getCurrentRoute().getDetail())
 			.setOngoing(true)
 			.setSmallIcon(android.R.drawable.ic_menu_directions)
 			.addAction(android.R.drawable.ic_media_rew, "Prev", pIntentPrev)

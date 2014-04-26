@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.kiri.hackjak.db.DaoMaster;
 import com.kiri.hackjak.db.DaoSession;
+import com.kiri.hackjak.db.TaxiDao;
+import com.kiri.hackjak.db.TaxiPhoneDao;
 import com.kiri.hackjak.db.TrayekDao;
 import com.kiri.hackjak.db.TrayekRouteDao;
 import com.kiri.hackjak.db.TrayekRouteDetailDao;
@@ -15,7 +17,6 @@ import com.kiri.hackjak.sqliteasset.MyDatabase;
 
 public class KiriApp extends Application {
 	private static SQLiteDatabase db;
-	// private static DaoMaster.DevOpenHelper dbHelper;
 	private static DaoMaster daoMaster;
 	private static DaoSession daoSession;
 
@@ -23,6 +24,8 @@ public class KiriApp extends Application {
 	private static TrayekRouteDao trayekRouteDao;
 	private static TrayekRouteDetailDao trayekRouteDetailDao;
 	private static TrayekWaypointDao trayekWaypointDao;
+	private static TaxiDao taxiDao;
+	private static TaxiPhoneDao taxiPhoneDao;
 
 	@Override
 	public void onCreate() {
@@ -51,8 +54,8 @@ public class KiriApp extends Application {
 	}
 
 	private void initDatabase() {
-		// dbHelper = new DaoMaster.DevOpenHelper(getApplicationContext(),
-		// "hackjack_db", null);
+		// DaoMaster.DevOpenHelper dbHelper = new DaoMaster.DevOpenHelper(
+		// getApplicationContext(), "hackjack2_db", null);
 		MyDatabase dbHelper = new MyDatabase(this);
 		db = dbHelper.getWritableDatabase();
 		daoMaster = new DaoMaster(db);
@@ -61,6 +64,8 @@ public class KiriApp extends Application {
 		trayekRouteDao = daoSession.getTrayekRouteDao();
 		trayekRouteDetailDao = daoSession.getTrayekRouteDetailDao();
 		trayekWaypointDao = daoSession.getTrayekWaypointDao();
+		taxiDao = daoSession.getTaxiDao();
+		taxiPhoneDao = daoSession.getTaxiPhoneDao();
 	}
 
 	public static SQLiteDatabase getDb() {
@@ -85,6 +90,14 @@ public class KiriApp extends Application {
 
 	public static TrayekRouteDetailDao getTrayekRouteDetailDao() {
 		return trayekRouteDetailDao;
+	}
+
+	public static TaxiDao getTaxiDao() {
+		return taxiDao;
+	}
+
+	public static TaxiPhoneDao getTaxiPhoneDao() {
+		return taxiPhoneDao;
 	}
 
 }

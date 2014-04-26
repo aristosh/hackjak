@@ -43,6 +43,14 @@ public class ApiGrabberHelper {
 		}
 	}
 
+	/**
+	 * Checks if database is available
+	 * @return true if available, false otherwise.
+	 */
+	public boolean isDatabaseAvailable() {
+		return KiriApp.getTrayekDao().count() > 0;
+	}
+	
 	private void insertDataToDb() {
 		Thread thread = new Thread() {
 			@Override

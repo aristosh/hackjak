@@ -39,12 +39,12 @@ public class SearchFragment extends Fragment implements OnClickListener {
 		btnSearch = (Button)rootView.findViewById(R.id.btnSearch);
 
 		// get data from API
-		//hackJakApiHelper = new ApiGrabberHelper(getActivity());
+		hackJakApiHelper = new ApiGrabberHelper(getActivity());
 		//hackJakApiHelper.grabDataFromApi();
 		
 		// get data either from CSV or SQLite
 		RoutingEngineFactory ref = new RoutingEngineFactory(getActivity());
-		router = ref.createRoutingEngine(hackJakApiHelper);
+		router = ref.createRoutingEngine();
 
 		WaypointAdapter adapter = new WaypointAdapter(getActivity(),
 				android.R.layout.simple_dropdown_item_1line);

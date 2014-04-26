@@ -23,8 +23,8 @@ public class RoutingEngineFactory {
 	 * Tries to get from database, if not available from CSV.
 	 * @return the routing engine.
 	 */
-	public RoutingEngine createRoutingEngine(ApiGrabberHelper hackJakApiHelper) {
-		if (hackJakApiHelper.isDatabaseAvailable()) {
+	public RoutingEngine createRoutingEngine() {
+		if (KiriApp.getTrayekDao().count() > 0) {
 			return SQLiteRouteWorldFactory.createFromSQL();
 		} else {
 			try {

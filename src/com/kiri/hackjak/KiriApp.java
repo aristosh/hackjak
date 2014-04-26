@@ -67,6 +67,7 @@ public class KiriApp extends Application {
 	public static TrayekWaypointDao getTrayekWaypointDao() {
 		return trayekWaypointDao;
 	}
+	
 	// public static TrayekRouteDao getTrayekRouteDao() {
 	// return trayekRouteDao;
 	// }

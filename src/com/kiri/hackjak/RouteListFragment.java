@@ -18,10 +18,12 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.kiri.hackjak.adapters.ResultAdapter;
+import com.kiri.hackjak.model.SearchResult;
 
-public class RouteListFragment extends ListFragment implements AbsListView.OnScrollListener {
+public class RouteListFragment extends ListFragment implements AbsListView.OnScrollListener, View.OnClickListener {	
 	private enum QuickReturnState {
 		HIDE,
 		DISPLAY,
@@ -42,11 +44,9 @@ public class RouteListFragment extends ListFragment implements AbsListView.OnScr
 	private int mTopOfLastFirstVisibleItem = 0;
 	
 	private ImageButton mButtonNavigate;
-	private ArrayAdapter<String> mAdapter;
+	private ArrayAdapter<SearchResult.Step> mAdapter;
 	private ListView mListView;
-	private List<String> mRouteList;
-	
-	public static List<String> mDummyList;
+	private List<SearchResult> mRouteList;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -58,20 +58,25 @@ public class RouteListFragment extends ListFragment implements AbsListView.OnScr
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		mListView = getListView();
-		mDummyList = new ArrayList<String>();
 		
-		// TTDO : dummy data
-		for(int i = 0; i < 10; i++)
-			mDummyList.add(Integer.toString(i) + "Turun di JALAN PAJAJARAN\nKemudian naik CIBOGO - ELANG");
-		mDummyList.add("Turun di JALAN PAJAJARAN");
+		mRouteList = MainActivity.mRouteList;
 		
-		mRouteList = mDummyList;
-		mAdapter = new ResultAdapter(getActivity(), R.layout.cell_route_list, mRouteList);
-		mListView.setAdapter(mAdapter);
-		mListView.setOnScrollListener(this);
+		mButtonNavigate.setVisibility(View.GONE);
+		if(mRouteList.size() > 0) {
+			mButtonNavigate.setOnClickListener(this);
+			if(android.os.Build.VERSION.SDK_INT >= 11) {
+				mButtonNavigate.setVisibility(View.VISIBLE);
+			}
+			
+			mAdapter = new ResultAdapter(getActivity(), R.layout.cell_route_list, mRouteList.get(0).steps);
+			mListView.setAdapter(mAdapter);
+			mListView.setOnScrollListener(this);
+		} else {
+			Toast.makeText(getActivity(), "No result", Toast.LENGTH_LONG).show();
+		}
 		
-		if(android.os.Build.VERSION.SDK_INT < 11)
-			mButtonNavigate.setVisibility(View.GONE);
+		
+		
 		
 		mQuickReturnState = QuickReturnState.DISPLAY;
 		mTouchingState = ToucingState.IDLE;
@@ -129,5 +134,16 @@ public class RouteListFragment extends ListFragment implements AbsListView.OnScr
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		if(scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) mTouchingState = ToucingState.TOUCHING;
+	}
+	
+	@Override
+	public void onClick(View v) {
+		Toast.makeText(getActivity(), "Navigation Mode", Toast.LENGTH_SHORT).show();
+		
+		Navigation navigation = Navigation.getInstance();
+		navigation.initiateRoutes(getActivity(), mRouteList.get(0).steps);
+		navigation.redraw();
+		
+		getActivity().moveTaskToBack(true);	
 	}
 }

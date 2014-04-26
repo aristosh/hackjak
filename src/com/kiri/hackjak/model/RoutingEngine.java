@@ -15,9 +15,9 @@ public class RoutingEngine {
 		// Constructor only allowed from the same package
 	}
 	
-	Map<String, Waypoint> availableWaypoints = new TreeMap<String, Waypoint>();
-	Set<Waypoint> waypoints = new TreeSet<Waypoint>();
-	List<Trayek> trayeks = new ArrayList<Trayek>();
+	Map<String, WaypointModel> availableWaypoints = new TreeMap<String, WaypointModel>();
+	Set<WaypointModel> waypoints = new TreeSet<WaypointModel>();
+	List<TrayekModel> trayeks = new ArrayList<TrayekModel>();
 	Graph graph = null;
 	
 	public static RoutingEngine createFromSQLLite() {
@@ -29,10 +29,10 @@ public class RoutingEngine {
 		// TODO
 	}
 	
-	public List<SearchResult> findRoute(Waypoint from, Waypoint to) {
+	public List<SearchResult> findRoute(WaypointModel from, WaypointModel to) {
 		Node fromNode = null;
 		Node toNode = null;
-		for (Trayek trayek: trayeks) {
+		for (TrayekModel trayek: trayeks) {
 			for (Node node: trayek.route) {
 				if (node.waypoint == from) {
 					fromNode = node;
@@ -69,15 +69,15 @@ public class RoutingEngine {
 		return searchResults;
 	}
 	
-	public Set<Waypoint> getWaypoints() {
+	public Set<WaypointModel> getWaypoints() {
 		return waypoints;
 	}
 	
-	public List<Trayek> getTrayeks() {
+	public List<TrayekModel> getTrayeks() {
 		return trayeks;
 	}
 	
-	public Waypoint getWaypointFromString(String text) {
+	public WaypointModel getWaypointFromString(String text) {
 		return availableWaypoints.get(text);
 	}
 }

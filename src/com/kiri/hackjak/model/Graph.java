@@ -17,15 +17,15 @@ class Graph {
 	 */
 	public Graph(RoutingEngine engine) {
 		this.engine = engine;
-		List<Trayek> trayeks = engine.getTrayeks();
+		List<TrayekModel> trayeks = engine.getTrayeks();
 		// Create owner mappings for better performance
-		Map<Waypoint, List<Trayek>> waypointOwners = new TreeMap<Waypoint, List<Trayek>>();
-		for (Trayek trayek: trayeks) {
+		Map<WaypointModel, List<TrayekModel>> waypointOwners = new TreeMap<WaypointModel, List<TrayekModel>>();
+		for (TrayekModel trayek: trayeks) {
 			for (Node node: trayek.route) {
-				Waypoint waypoint = node.waypoint;
-				List<Trayek> existingList = waypointOwners.get(waypoint);
+				WaypointModel waypoint = node.waypoint;
+				List<TrayekModel> existingList = waypointOwners.get(waypoint);
 				if (existingList == null) {
-					existingList = new ArrayList<Trayek>(1);
+					existingList = new ArrayList<TrayekModel>(1);
 					existingList.add(trayek);
 					waypointOwners.put(waypoint, existingList);
 				} else {
@@ -34,7 +34,7 @@ class Graph {
 			}
 		}
 		// Construct graph
-		for (Trayek trayek: trayeks) {
+		for (TrayekModel trayek: trayeks) {
 			for (int i = 0, size = trayek.route.size(); i < size; i++) {
 				Node node = trayek.route.get(i);
 				// Forward edge
@@ -42,7 +42,7 @@ class Graph {
 					node.connections.add(trayek.route.get(i + 1));
 				}
 				// Link to similar waypoint.
-				for (Trayek adjacentTrayek: waypointOwners.get(node.waypoint)) {
+				for (TrayekModel adjacentTrayek: waypointOwners.get(node.waypoint)) {
 					if (adjacentTrayek != trayek) {
 						for (Node potentialNode: adjacentTrayek.route) {
 							if (potentialNode.waypoint == node.waypoint) {
@@ -57,7 +57,7 @@ class Graph {
 	public List<Node> findShortestPath(Node start, Node finish) {
 		Queue<Node> queue = new LinkedList<Node>();
 		// Set all as unreachable except start.
-		for (Trayek trayek: engine.trayeks) {
+		for (TrayekModel trayek: engine.trayeks) {
 			for (Node node: trayek.route) {
 				if (node == start) {
 					node.bestDistance = 0;

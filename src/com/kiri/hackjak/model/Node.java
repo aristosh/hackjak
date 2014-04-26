@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Node {
-	public Waypoint waypoint;
+	public WaypointModel waypoint;
 	public List<Node> connections;
-	public Trayek owner;
+	public TrayekModel owner;
 
 	int bestDistance;
 	Node parent;
 	
-	public Node(Waypoint waypoint, Trayek owner) {
+	public Node(WaypointModel waypoint, TrayekModel owner) {
 		this.waypoint = waypoint;
 		this.owner = owner;
 		connections = new ArrayList<Node>();

@@ -15,14 +15,16 @@ import android.widget.TextView;
 
 import com.kiri.hackjak.R;
 import com.kiri.hackjak.RouteMapActivity;
+import com.kiri.hackjak.model.SearchResult;
+import com.kiri.hackjak.model.SearchResult.Step;
 
-public class ResultAdapter extends ArrayAdapter<String> {
-	private List<String> mList;
+public class ResultAdapter extends ArrayAdapter<SearchResult.Step> {
+	private List<SearchResult.Step> mList;
 	private Context mContext;
 	private int mResource;
 	private LayoutInflater mInflater;
 
-	public ResultAdapter(Context context, int resource, List<String> list) {
+	public ResultAdapter(Context context, int resource, List<SearchResult.Step> list) {
 		super(context, resource, list);
 		this.mContext = context;
 		this.mResource = resource;
@@ -38,15 +40,17 @@ public class ResultAdapter extends ArrayAdapter<String> {
 			convertView = mInflater.inflate(mResource, null);
 		}
 
-		// TODO : fill data
-		String route = mList.get(position);
+		Step step = mList.get(position);
 
+		TextView textNoTrayek = (TextView) convertView
+				.findViewById(R.id.textNoTrayek);
 		TextView textResult = (TextView) convertView
-				.findViewById(R.id.textView1);
+				.findViewById(R.id.textStep);
 		ImageView imageMap = (ImageView) convertView
 				.findViewById(R.id.imageMap);
 
-		textResult.setText(route);
+		textNoTrayek.setText(step.track.noTrayek);
+		textResult.setText(step.track.namaSingkat);
 		imageMap.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

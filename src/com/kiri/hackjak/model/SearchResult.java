@@ -12,10 +12,10 @@ public class SearchResult {
 	
 	public static class Step {
 		/** The track that the person has to take. */
-		public Trayek track;
-		/** Index of road in {@link Trayek#route} where the person has to take. */
+		public TrayekModel track;
+		/** Index of road in {@link TrayekModel#route} where the person has to take. */
 		public int boardIndex;
-		/** Index of road in {@link Trayek#route} where the person has to alight / get down. */
+		/** Index of road in {@link TrayekModel#route} where the person has to alight / get down. */
 		public int alightIndex;
 		
 		@Override

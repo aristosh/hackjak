@@ -2,6 +2,8 @@ package com.kiri.hackjak;
 
 import java.util.List;
 
+import com.kiri.hackjak.model.SearchResult;
+
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -18,7 +20,7 @@ public class Navigation {
 	private static Navigation mInstance;
 	
 	private Context mContext;
-	private List<String> mRoutes;
+	private List<SearchResult.Step> mRoutes;
 	private int mRouteIndex;
 	
 	private NotificationManager notificationManager;
@@ -28,7 +30,7 @@ public class Navigation {
 		return (mInstance == null ? (mInstance = new Navigation()) : mInstance);
 	}
 	
-	public void initiateRoutes(Context context, List<String> routes) {
+	public void initiateRoutes(Context context, List<SearchResult.Step> routes) {
 		mContext = context;
 		mRoutes = routes;
 		mRouteIndex = 0;
@@ -38,17 +40,17 @@ public class Navigation {
 		notifyBuilder = new NotificationCompat.Builder(mContext);
 	}
 	
-	public String actionPrev() {
+	public SearchResult.Step actionPrev() {
 		if(mRouteIndex > 0)  mRouteIndex--;
 		return mRoutes.get(mRouteIndex);
 	}
 	
-	public String actionNext() {
+	public SearchResult.Step actionNext() {
 		if(mRouteIndex < mRoutes.size() - 1)  mRouteIndex++;
 		return mRoutes.get(mRouteIndex);
 	}
 	
-	public String getCurrentRoute() {
+	public SearchResult.Step getCurrentRoute() {
 		return mRoutes.get(mRouteIndex);
 	}
 	
@@ -71,7 +73,7 @@ public class Navigation {
 		
 		notifyBuilder
 			.setContentTitle("Navigasi : " + Integer.toString(mRouteIndex))
-			.setContentText(getCurrentRoute())
+			.setContentText(getCurrentRoute().track.noTrayek)
 			.setOngoing(true)
 			.setSmallIcon(android.R.drawable.ic_menu_directions)
 			.addAction(android.R.drawable.ic_media_rew, "Prev", pIntentPrev)

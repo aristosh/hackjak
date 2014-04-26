@@ -1,5 +1,7 @@
 package com.kiri.hackjak;
 
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
@@ -8,10 +10,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.kiri.hackjak.model.SearchResult;
+import com.kiri.hackjak.sqlite.Trayek;
+
+import de.greenrobot.dao.query.QueryBuilder;
+
 public class MainActivity extends ActionBarActivity {
-    
+	// sorry for doing this
+	public static List<SearchResult> mRouteList;
+	
 	private FragmentManager mFragmentManager;
 	private SearchFragment mSearchFragment;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,21 +54,10 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void onClickSearch(View v) {	
+	public void displayRouteList() {
 		RouteListFragment fragmentContainer = new RouteListFragment();
-		
 		mFragmentManager.beginTransaction()
 			.replace(R.id.container, fragmentContainer)
-			.commit();
-	}
-	
-	public void onClickNavigate(View v) {
-		Toast.makeText(this, "Navigation Mode", Toast.LENGTH_SHORT).show();
-		
-		Navigation navigation = Navigation.getInstance();
-		navigation.initiateRoutes(this, RouteListFragment.mDummyList);
-		navigation.redraw();
-		
-		moveTaskToBack(true);
+			.commit();		
 	}
 }

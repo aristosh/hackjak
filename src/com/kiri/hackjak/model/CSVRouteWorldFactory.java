@@ -44,8 +44,8 @@ public class CSVRouteWorldFactory {
 		return newWorld;
 	}
 	
-	private static Trayek generateTrayek(String jenisAngkutan, String jenisTrayek, String noTrayek, String namaTrayek, String dashSeparatedWaypoints, Map<String, Waypoint> availableWaypoints) {
-		Trayek newTrayek = new Trayek();
+	private static TrayekModel generateTrayek(String jenisAngkutan, String jenisTrayek, String noTrayek, String namaTrayek, String dashSeparatedWaypoints, Map<String, WaypointModel> availableWaypoints) {
+		TrayekModel newTrayek = new TrayekModel();
 		List<Node> nodes = stringToNodes(availableWaypoints, newTrayek, dashSeparatedWaypoints);
 		newTrayek.kategori = jenisTrayek == "-" ? jenisAngkutan : jenisTrayek;
 		newTrayek.namaSingkat = String.format("%s %s (arah %s)", noTrayek, namaTrayek, nodes.get(nodes.size() - 1).waypoint.toString());
@@ -53,7 +53,7 @@ public class CSVRouteWorldFactory {
 		return newTrayek;
 	}
 	
-	private static List<Node> stringToNodes(Map<String, Waypoint> availableWaypoints, Trayek owner, String dashSeparatedText) {
+	private static List<Node> stringToNodes(Map<String, WaypointModel> availableWaypoints, TrayekModel owner, String dashSeparatedText) {
 		String[] roadsText = dashSeparatedText.split(" *-+ *");
 		List<Node> returnedRoads = new ArrayList<Node>();
 		for (String roadText: roadsText) {
@@ -62,10 +62,10 @@ public class CSVRouteWorldFactory {
 		return returnedRoads;
 	}
 	
-	private static Waypoint createOrReuseWaypoint(Map<String, Waypoint> availableWaypoints, String name) {
-		Waypoint waypoint = availableWaypoints.get(name);
+	private static WaypointModel createOrReuseWaypoint(Map<String, WaypointModel> availableWaypoints, String name) {
+		WaypointModel waypoint = availableWaypoints.get(name);
 		if (waypoint == null) {
-			waypoint = new Waypoint(name);
+			waypoint = new WaypointModel(name);
 			availableWaypoints.put(name, waypoint);
 		}
 		return waypoint;

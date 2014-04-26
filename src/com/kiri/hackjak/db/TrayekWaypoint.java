@@ -104,4 +104,7 @@ public class TrayekWaypoint {
         myDao.refresh(this);
     }
 
+    public String toString() {
+    	return point;
+    }
 }

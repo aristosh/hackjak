@@ -175,14 +175,17 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 		FormattedResult currentResult = null;
 		for (TrayekRouteDetail routeDetail: listRouteDetails) {
 			if (currentResult != null && routeDetail.getIdRuteTrayek() == currentResult.idRuteTrayek) {
-				currentResult.turun = "" + routeDetail.getIdWaypoint();
+				currentResult.turun = routeDetail.getIdWaypoint();
 			} else {
 				currentResult = new FormattedResult();
 				currentResult.idRuteTrayek = routeDetail.getIdRuteTrayek();
-				currentResult.naik = "" + routeDetail.getIdWaypoint();
-				currentResult.turun = "" + routeDetail.getIdWaypoint();
+				currentResult.naik = routeDetail.getIdWaypoint();
+				currentResult.turun = routeDetail.getIdWaypoint();
 				mRouteList.add(currentResult);
 			}
+		}
+		for (FormattedResult result: mRouteList) {
+			result.updateStringValues();
 		}
 		mAdapter.notifyDataSetChanged();
 	}

@@ -151,11 +151,14 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 			break;
 
 		case R.id.buttonNavigate:
-			 Navigation navigation = Navigation.getInstance();
-			 navigation.initiateRoutes(getActivity(), mRouteList);
-			 navigation.redraw();
-			 Toast.makeText(getActivity(), "Hide to notification bar", Toast.LENGTH_SHORT).show();
-			 getActivity().moveTaskToBack(true);
+			if (mRouteList != null && mRouteList.size() > 0) {
+				 Navigation navigation = Navigation.getInstance();
+				 navigation.initiateRoutes(getActivity(), mRouteList);
+				 navigation.redraw();
+				 Toast.makeText(getActivity(), "Hidden to notification bar", Toast.LENGTH_SHORT).show();
+				 getActivity().moveTaskToBack(true);
+			}
+			break;
 		default:
 			break;
 		}

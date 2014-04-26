@@ -62,15 +62,15 @@ public class FormattedResult {
 		}
 		
 		if(type == Type.BOARD) {
-			return String.format("Board on %s at %s", noTrayekString, pointString.get(0));
+			return String.format("Board %s %s at %s", jenisTrayekString.equals("-") ? jenisAngkutanString : jenisTrayekString, noTrayekString, pointString.get(0));
 		} else if(type == Type.ALIGHT) {
-			return String.format("Alight from %s at %s", noTrayekString, pointString.get(0));
+			return String.format("Alight from %s %s at %s", jenisTrayekString.equals("-") ? jenisAngkutanString : jenisTrayekString, noTrayekString, pointString.get(0));
 		} else {
-			String detail = "Keep riding ";
-			for(int i = 0; i < pointId.size(); i++) {
+			String detail = String.format("Keep riding %s through ", noTrayekString);
+			for(int i = 0; i < pointId.size() - 1; i++) {
 				detail += String.format("%s, ", pointString.get(i));
 			}
-			detail = detail.substring(0, detail.length() - 2);
+			detail += String.format("and %s", pointString.get(pointString.size() - 1));
 			return detail;
 		}
 	}

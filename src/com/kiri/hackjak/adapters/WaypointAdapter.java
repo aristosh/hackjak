@@ -4,33 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.kiri.hackjak.KiriApp;
+import com.kiri.hackjak.R;
+import com.kiri.hackjak.db.TrayekRouteDetail;
 import com.kiri.hackjak.db.TrayekWaypoint;
 import com.kiri.hackjak.db.TrayekWaypointDao;
 
 import de.greenrobot.dao.query.QueryBuilder;
 
-public class WaypointAdapter extends ArrayAdapter<TrayekWaypoint> implements
-		Filterable {
+public class WaypointAdapter extends BaseAdapter implements Filterable {
 
 	private List<TrayekWaypoint> fullList;
 	private List<TrayekWaypoint> mOriginalValues;
 
+	LayoutInflater inflater;
 	private ArrayFilter mFilter;
+	private Context mContext;
 
-	public WaypointAdapter(Context context, int resource) {
-		super(context, resource);
+	public WaypointAdapter(Context context) {
+		mContext = context;
 		mOriginalValues = new ArrayList<TrayekWaypoint>();
 		fullList = mOriginalValues;
 		// this.fullList = listTrayekWaypoint;
 		// mOriginalValues = new ArrayList<TrayekWaypoint>(fullList);
+		inflater = LayoutInflater.from(context);
 	}
 
 	@Override
@@ -50,9 +55,18 @@ public class WaypointAdapter extends ArrayAdapter<TrayekWaypoint> implements
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View v = super.getView(position, convertView, parent);
-		TextView tv = (TextView) v.findViewById(android.R.id.text1);
-		tv.setText(fullList.get(position).getPoint());
+		View v = inflater.inflate(R.layout.row_waypoint_dropdown, null);
+		TextView tv1 = (TextView) v.findViewById(R.id.text1);
+		TextView tv2 = (TextView) v.findViewById(R.id.text2);
+		TrayekWaypoint waypoint = fullList.get(position);
+		List<TrayekRouteDetail> listRouteDetail = waypoint.getRuteVia();
+		List<String> trayekLewat = new ArrayList<String>();
+		for (int i = 0; i < listRouteDetail.size(); i++) {
+			TrayekRouteDetail detail = listRouteDetail.get(i);
+			trayekLewat.add(detail.getTrayekRoute().getTrayek().getNoTrayek());
+		}
+		tv1.setText(waypoint.getPoint());
+		tv2.setText(KiriApp.implodeArray(trayekLewat, ", "));
 		return v;
 	}
 

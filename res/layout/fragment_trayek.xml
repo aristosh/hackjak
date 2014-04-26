@@ -21,7 +21,9 @@
             android:background="@drawable/selector_bg_edittext"
             android:hint="Leaving from"
             android:imeOptions="actionNext"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColor="#000"
+            android:textColorHint="#999" />
 
         <AutoCompleteTextView
             android:id="@+id/acEditTo"
@@ -31,7 +33,9 @@
             android:background="@drawable/selector_bg_edittext"
             android:hint="Leaving to"
             android:imeOptions="actionDone"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColor="#000"
+            android:textColorHint="#999" />
 
         <Button
             android:id="@+id/btnSearch"

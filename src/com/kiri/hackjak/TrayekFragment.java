@@ -167,7 +167,7 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 	public void doSearch(TrayekWaypoint from, TrayekWaypoint to) {
 		List<TrayekRouteDetail> listRouteDetails = Routing.getRouteOne(
 				from.getId(), to.getId());
-
+		mRouteList.clear();
 		mRouteList.addAll(listRouteDetails);
 		mAdapter.notifyDataSetChanged();
 	}

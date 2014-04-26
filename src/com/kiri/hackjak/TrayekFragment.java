@@ -26,7 +26,6 @@ import android.widget.Toast;
 import com.kiri.hackjak.adapters.FormattedResult;
 import com.kiri.hackjak.adapters.FormattedResultAdapter;
 import com.kiri.hackjak.adapters.WaypointAdapter;
-import com.kiri.hackjak.apis.ApiGrabberHelper;
 import com.kiri.hackjak.db.TrayekRouteDetail;
 import com.kiri.hackjak.db.TrayekWaypoint;
 import com.kiri.hackjak.db.TrayekWaypointDao;
@@ -115,8 +114,8 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 			mButtonNavigate.setVisibility(View.VISIBLE);
 		}
 
-		mAdapter = new FormattedResultAdapter(getActivity(), R.layout.cell_route_list,
-				mRouteList);
+		mAdapter = new FormattedResultAdapter(getActivity(),
+				R.layout.cell_route_list, mRouteList);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnScrollListener(this);
 
@@ -163,12 +162,16 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 	public void doSearch(TrayekWaypoint from, TrayekWaypoint to) {
 		List<TrayekRouteDetail> listRouteDetails = Routing.getRouteOne(
 				from.getId(), to.getId());
-		
-		
+		if (listRouteDetails.size() == 0) {
+			// try route 2
+			listRouteDetails = Routing
+					.getRouteTwoIbun(from.getId(), to.getId());
+		}
 		mRouteList.clear();
 		FormattedResult currentResult = null;
-		for (TrayekRouteDetail routeDetail: listRouteDetails) {
-			if (currentResult != null && routeDetail.getIdRuteTrayek() == currentResult.idRuteTrayek) {
+		for (TrayekRouteDetail routeDetail : listRouteDetails) {
+			if (currentResult != null
+					&& routeDetail.getIdRuteTrayek() == currentResult.idRuteTrayek) {
 				currentResult.turun = "" + routeDetail.getIdWaypoint();
 			} else {
 				currentResult = new FormattedResult();

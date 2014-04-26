@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.kiri.hackjak.adapters.WaypointAdapter;
 import com.kiri.hackjak.apis.ApiGrabberHelper;
@@ -16,6 +17,10 @@ import com.kiri.hackjak.model.RoutingEngineFactory;
 import com.kiri.hackjak.model.SQLiteRouteWorldFactory;
 import com.kiri.hackjak.model.SearchResult;
 import com.kiri.hackjak.model.WaypointModel;
+import com.kiri.hackjak.sqlite.TrayekWaypoint;
+import com.kiri.hackjak.sqlite.TrayekWaypointDao;
+
+import de.greenrobot.dao.query.QueryBuilder;
 
 public class SearchFragment extends Fragment implements OnClickListener {
 //	private static final String[] TEXT_AUTOCOMPLETE = new String[] { "Belgium",
@@ -58,12 +63,24 @@ public class SearchFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		WaypointModel from = new WaypointModel(acFrom.getText().toString());
-		WaypointModel to = new WaypointModel(acTo.getText().toString());
 		
-		MainActivity.mRouteList = router.findRoute(from, to);
+		if(validateSearchParameter(acFrom.getText().toString()) && validateSearchParameter(acTo.getText().toString())) {
+			WaypointModel from = router.getWaypointFromString(acFrom.getText().toString());
+			WaypointModel to = router.getWaypointFromString(acTo.getText().toString());
+			
+			MainActivity.mRouteList = router.findRoute(from, to);
+			
+			((MainActivity)getActivity()).displayRouteList();
+		} else {
+			Toast.makeText(getActivity(), "Invalid input parameter", Toast.LENGTH_LONG).show();
+		}
+	}
 		
-		((MainActivity)getActivity()).displayRouteList();
+	private boolean validateSearchParameter(String param) {
+		QueryBuilder<TrayekWaypoint> qb = KiriApp
+				.getTrayekWaypointDao().queryBuilder();
+		qb.where(TrayekWaypointDao.Properties.Point.like(param));
+		return qb.list().size() > 0;
 	}
 
 }

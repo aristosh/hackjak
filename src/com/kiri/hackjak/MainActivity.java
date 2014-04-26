@@ -22,7 +22,6 @@ public class MainActivity extends ActionBarActivity {
 	private FragmentManager mFragmentManager;
 	private SearchFragment mSearchFragment;
 	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

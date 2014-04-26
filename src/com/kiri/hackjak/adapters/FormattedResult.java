@@ -21,49 +21,52 @@ public class FormattedResult {
 	public long idRuteTrayek;
 	public Type type;
 	public List<Long> pointId;
+	
 	private String noTrayekString;
+	private List<String> pointString;
 	
 	public FormattedResult() {
 		pointId = new ArrayList<Long>();
+		pointString = new ArrayList<String>();
+	}
+
+	private void constructTexts() {
+		QueryBuilder<TrayekRoute> trqb = KiriApp.getTrayekRouteDao().queryBuilder();
+		trqb.where(TrayekRouteDao.Properties.Id.eq(idRuteTrayek));
+		long idTrayek = trqb.list().get(0).getIdTrayek();
+		QueryBuilder<Trayek> tqb = KiriApp.getTrayekDao().queryBuilder();
+		tqb.where(TrayekDao.Properties._id.eq(idTrayek));
+		noTrayekString = tqb.list().get(0).getNoTrayek();
+		
+		for (int i = 0; i <pointId.size(); i++) {
+			QueryBuilder<TrayekWaypoint> qb = KiriApp.getTrayekWaypointDao().queryBuilder();
+			qb.where(TrayekWaypointDao.Properties.Id.eq(pointId.get(i)));
+			pointString.add(qb.list().get(0).getPoint());
+		}
 	}
 	
 	public String getTitle() {
+		if (noTrayekString == null) {
+			constructTexts();
+		}
 		return noTrayekString;
 	}
 	
 	public String getDetail() {
-		QueryBuilder<TrayekRoute> trqb = KiriApp.getTrayekRouteDao().queryBuilder();
-		trqb.where(TrayekRouteDao.Properties.Id.eq(idRuteTrayek));
-		long idTrayek = trqb.list().get(0).getIdTrayek();
-		
-		QueryBuilder<Trayek> tqb = KiriApp.getTrayekDao().queryBuilder();
-		tqb.where(TrayekDao.Properties._id.eq(idTrayek));
-		String noTrayek = tqb.list().get(0).getNoTrayek();
-		
+		if (noTrayekString == null) {
+			constructTexts();
+		}
 		
 		if(type == Type.BOARD) {
-			QueryBuilder<TrayekWaypoint> qb = KiriApp.getTrayekWaypointDao().queryBuilder();
-			qb.where(TrayekWaypointDao.Properties.Id.eq(pointId.get(0)));
-			String str = qb.list().get(0).getPoint();
-			return String.format("Board on %s at %s", noTrayek, str);
+			return String.format("Board on %s at %s", noTrayekString, pointString.get(0));
 		} else if(type == Type.ALIGHT) {
-			QueryBuilder<TrayekWaypoint> qb = KiriApp.getTrayekWaypointDao().queryBuilder();
-			qb.where(TrayekWaypointDao.Properties.Id.eq(pointId.get(0)));
-			String str = qb.list().get(0).getPoint();
-			return String.format("Alight from %s at %s", noTrayek, str);
+			return String.format("Alight from %s at %s", noTrayekString, pointString.get(0));
 		} else {
 			String detail = "Keep riding at ";
-			for(int i = 0; i < pointId.size() - 1; i++) {
-				QueryBuilder<TrayekWaypoint> qb = KiriApp.getTrayekWaypointDao().queryBuilder();
-				qb.where(TrayekWaypointDao.Properties.Id.eq(pointId.get(i)));
-				String str = qb.list().get(0).getPoint();
-				detail += String.format("%s, ", str);
+			for(int i = 0; i < pointId.size(); i++) {
+				detail += String.format("%s, ", pointString.get(i));
 			}
-			QueryBuilder<TrayekWaypoint> qb = KiriApp.getTrayekWaypointDao().queryBuilder();
-			qb.where(TrayekWaypointDao.Properties.Id.eq(pointId.get(pointId.size() - 1)));
-			String str = qb.list().get(0).getPoint();
-			detail += String.format("%s", str);
-			
+			detail = detail.substring(0, detail.length() - 1);
 			return detail;
 		}
 	}

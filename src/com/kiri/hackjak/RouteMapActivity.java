@@ -1,5 +1,13 @@
 package com.kiri.hackjak;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -9,8 +17,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.kiri.hackjak.R;
 
 public class RouteMapActivity extends ActionBarActivity {
 
@@ -64,6 +80,46 @@ public class RouteMapActivity extends ActionBarActivity {
 					.findFragmentById(R.id.google_map);
 			mMap = mMapFragment.getMap();
 			mMap.setMyLocationEnabled(true);
+
+			try {
+				// TODO retrieve from intent
+				InputStream is = getActivity().getAssets().open(
+						"kopaja_p19.json");
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is));
+				StringBuilder sb = new StringBuilder();
+				String line;
+				while ((line = reader.readLine()) != null) {
+					sb.append(line);
+				}
+				reader.close();
+				JSONArray jsonArray = new JSONArray(sb.toString());
+				PolylineOptions options = new PolylineOptions();
+				LatLngBounds bounds = null;
+				for (int i = 0, size = jsonArray.length(); i < size; i++) {
+					JSONArray latLngJson = jsonArray.getJSONArray(i);
+					LatLng latLng = new LatLng(latLngJson.getDouble(1), latLngJson.getDouble(0));
+					options.add(latLng);
+					bounds = bounds == null ? new LatLngBounds(latLng, latLng) : bounds.including(latLng);
+				}
+				options.color(0xaa00ff00);
+				mMap.addPolyline(options);
+				final LatLngBounds finalizedBounds = bounds;
+				mMap.setOnCameraChangeListener(new OnCameraChangeListener() {
+					@Override
+					public void onCameraChange(CameraPosition arg0) {
+						mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(finalizedBounds, 10));
+						mMap.setOnCameraChangeListener(null);
+					}
+				});
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 
 		private SupportMapFragment mMapFragment;

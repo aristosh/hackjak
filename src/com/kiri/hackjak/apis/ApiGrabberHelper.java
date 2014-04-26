@@ -68,7 +68,7 @@ public class ApiGrabberHelper {
 				});
 		alertDialogBuilder.create().show();
 	}
-
+	
 	private void insertDataToDb() {
 		Thread thread = new Thread() {
 			@Override

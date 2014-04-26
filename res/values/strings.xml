@@ -8,13 +8,12 @@
     <string name="google_api_key">AIzaSyDejypApqL9bt8neuQtvBvcAOb9QA7WGmk</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_notification_receiver">NotificationReceiverActivity</string>
-    <string name="title_activity_kiri">KiriActivity</string>
-    <string name="title_section_trayek">Public Transport</string>
-    <string name="title_section_contribute">Contribute Data</string>
-    <string name="title_section_update">Update Data</string>
-    <string name="title_section_about">About Kiri Hackjak</string>
+    <string name="title_activity_kiri">KIRI HackJak</string>
+    <string name="title_section_trayek">Route Search</string>
+    <string name="title_section_contribute">Data Contribution</string>
+    <string name="title_section_update">Data Update</string>
+    <string name="title_section_about">About KIRI HackJak</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
-
 </resources>

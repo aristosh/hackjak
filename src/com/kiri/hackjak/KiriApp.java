@@ -55,11 +55,18 @@ public class KiriApp extends Application {
 		db = dbHelper.getWritableDatabase();
 		daoMaster = new DaoMaster(db);
 		daoSession = daoMaster.newSession();
-
 		trayekDao = daoSession.getTrayekDao();
 		trayekRouteDao = daoSession.getTrayekRouteDao();
 		trayekRouteDetailDao = daoSession.getTrayekRouteDetailDao();
 		trayekWaypointDao = daoSession.getTrayekWaypointDao();
+	}
+
+	public static SQLiteDatabase getDb() {
+		return db;
+	}
+
+	public static void setDb(SQLiteDatabase db) {
+		KiriApp.db = db;
 	}
 
 	public static TrayekDao getTrayekDao() {

@@ -32,8 +32,7 @@ public class SearchFragment extends Fragment {
 		hackJakApiHelper.grabDataFromApi();
 
 		WaypointAdapter adapter = new WaypointAdapter(getActivity(),
-				android.R.layout.simple_dropdown_item_1line,
-				KiriApp.getTrayekWaypointDao());
+				android.R.layout.simple_dropdown_item_1line);
 		acFrom.setAdapter(adapter);
 		acTo.setAdapter(adapter);
 

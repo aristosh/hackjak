@@ -11,8 +11,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.kiri.hackjak.grdaos.TrayekWaypoint;
-import com.kiri.hackjak.grdaos.TrayekWaypointDao;
+import com.kiri.hackjak.KiriApp;
+import com.kiri.hackjak.sqlite.TrayekWaypoint;
+import com.kiri.hackjak.sqlite.TrayekWaypointDao;
 
 import de.greenrobot.dao.query.QueryBuilder;
 
@@ -24,12 +25,8 @@ public class WaypointAdapter extends ArrayAdapter<TrayekWaypoint> implements
 
 	private ArrayFilter mFilter;
 
-	TrayekWaypointDao trayekWaypointDao;
-
-	public WaypointAdapter(Context context, int resource,
-			TrayekWaypointDao trayekWaypointDao) {
+	public WaypointAdapter(Context context, int resource) {
 		super(context, resource);
-		this.trayekWaypointDao = trayekWaypointDao;
 		mOriginalValues = new ArrayList<TrayekWaypoint>();
 		fullList = mOriginalValues;
 		// this.fullList = listTrayekWaypoint;
@@ -90,8 +87,8 @@ public class WaypointAdapter extends ArrayAdapter<TrayekWaypoint> implements
 			} else {
 				final String prefixString = prefix.toString().toLowerCase();
 
-				QueryBuilder<TrayekWaypoint> qb = trayekWaypointDao
-						.queryBuilder();
+				QueryBuilder<TrayekWaypoint> qb = KiriApp
+						.getTrayekWaypointDao().queryBuilder();
 				qb.where(TrayekWaypointDao.Properties.Point.like("%" + prefix
 						+ "%"));
 				mOriginalValues = qb.list();

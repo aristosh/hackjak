@@ -1,18 +1,17 @@
 package com.kiri.hackjak.apis;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 
 import com.kiri.hackjak.KiriApp;
 import com.kiri.hackjak.apis.TrayekAllApi.TrayekApiDao;
-import com.kiri.hackjak.grdaos.Trayek;
-import com.kiri.hackjak.grdaos.TrayekRoute;
-import com.kiri.hackjak.grdaos.TrayekRouteDetail;
-import com.kiri.hackjak.grdaos.TrayekWaypoint;
-import com.kiri.hackjak.grdaos.TrayekWaypointDao;
+import com.kiri.hackjak.sqlite.Trayek;
+import com.kiri.hackjak.sqlite.TrayekWaypoint;
+import com.kiri.hackjak.sqlite.TrayekWaypointDao;
 
 public class ApiGrabberHelper {
 	private Activity mContext;
@@ -20,6 +19,11 @@ public class ApiGrabberHelper {
 	TrayekAllApi trayekAllApi;
 	int totalTrayekFromApi = 0;
 	int trayekApiPage = 1;
+
+	int totalProcessedData = 0;
+	boolean isProcessDbRunning = false;
+
+	Queue<TrayekApiDao> qTrayekData = new LinkedList<TrayekAllApi.TrayekApiDao>();
 
 	public ApiGrabberHelper(Activity ctx) {
 		mContext = ctx;
@@ -36,11 +40,77 @@ public class ApiGrabberHelper {
 			// call api
 			trayekAllApi = new TrayekAllApi(mContext, trayekAllApiListener);
 			trayekAllApi.callApi(trayekApiPage);
-			dialog.show();
 		}
 	}
 
-	int totalData = 0;
+	private void insertDataToDb() {
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				while (!qTrayekData.isEmpty()) {
+					for (int j = 0; j < 2; j++) {
+						// RUTE
+						TrayekApiDao trayekApiDao = qTrayekData.poll();
+						String kategori = (trayekApiDao.getJenisTrayek()
+								.equals("-")) ? trayekApiDao.getJenisAngkutan()
+								: trayekApiDao.getJenisTrayek();
+						List<String> rute;
+						if (j == 0) {
+							rute = trayekApiDao.getRuteBerangkat();
+						} else {
+							rute = trayekApiDao.getRuteKembali();
+						}
+						String namaSingkat = String.format("%s %s (arah %s)",
+								trayekApiDao.getNoTrayek(),
+								trayekApiDao.getNamaTrayek(),
+								rute.get(rute.size() - 1));
+						String ruteStr = KiriApp.implodeArray(rute, ",");
+						Trayek trayek = new Trayek(null, trayekApiDao.getId(),
+								trayekApiDao.getNoTrayek(), kategori,
+								namaSingkat, ruteStr);
+						long idTrayek = KiriApp.getTrayekDao().insert(trayek);
+
+						// TRAYEK WAYPOINT
+						for (int k = 0; k < rute.size(); k++) {
+							String point = rute.get(k);
+							TrayekWaypoint trayekWaypoint = new TrayekWaypoint(
+									null, point);
+							// cek apakah sudah ada
+							TrayekWaypoint searchDao = KiriApp
+									.getTrayekWaypointDao()
+									.queryBuilder()
+									.where(TrayekWaypointDao.Properties.Point
+											.eq(point)).unique();
+							long waypointId;
+							if (searchDao != null) {
+								waypointId = searchDao.getId();
+							} else {
+								waypointId = KiriApp.getTrayekWaypointDao()
+										.insert(trayekWaypoint);
+							}
+						}
+						mContext.runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								totalProcessedData = totalProcessedData + 1;
+								dialog.setProgress(totalProcessedData);
+							}
+						});
+					}
+
+				}
+				mContext.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						dialog.cancel();
+					}
+				});
+				isProcessDbRunning = false;
+			};
+		};
+		thread.start();
+	}
+
 	TrayekAllApi.ApiResultListener trayekAllApiListener = new TrayekAllApi.ApiResultListener() {
 
 		@Override
@@ -50,7 +120,8 @@ public class ApiGrabberHelper {
 
 		@Override
 		public void onApiPreCall() {
-
+			if (!isProcessDbRunning)
+				dialog.show();
 		}
 
 		@Override
@@ -59,96 +130,24 @@ public class ApiGrabberHelper {
 			if (trayekApiPage == 1)
 				dialog.setMax(totalAll);
 
-			Thread thread = new Thread() {
+			qTrayekData.addAll(listTrayek);
+			if (!isProcessDbRunning) {
+				isProcessDbRunning = true;
+				insertDataToDb();
+			}
+			totalTrayekFromApi = totalTrayekFromApi + totalCurrent;
+
+			mContext.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-
-					for (int i = 0; i < listTrayek.size(); i++) {
-						TrayekApiDao trayekApiDao = listTrayek.get(i);
-						Trayek trayek = new Trayek(null, trayekApiDao.getId(),
-								trayekApiDao.getJenisAngkutan(),
-								trayekApiDao.getJenisTrayek(),
-								trayekApiDao.getNoTrayek(),
-								trayekApiDao.getNamaTrayek(),
-								trayekApiDao.getTerminal(),
-								trayekApiDao.getKodeWilayah(),
-								trayekApiDao.getWilayah(),
-								trayekApiDao.getSukuDinas());
-						long idTrayek = KiriApp.getTrayekDao().insert(trayek);
-
-						List<List<String>> arrRute = new ArrayList<List<String>>();
-						arrRute.add(trayekApiDao.getRuteBerangkat());
-						arrRute.add(trayekApiDao.getRuteKembali());
-						// loop ruteberangkat & rutekembali
-						for (int j = 0; j < arrRute.size(); j++) {
-
-							// TRAYEK ROUTE
-							String routeName;
-							if (j == 0) {
-								routeName = "ruteBerangkat";
-							} else {
-								routeName = "ruteKembali";
-							}
-							TrayekRoute trayekRoute = new TrayekRoute(null,
-									routeName, idTrayek);
-							long trayekRouteId = KiriApp.getTrayekRouteDao()
-									.insert(trayekRoute);
-
-							for (int k = 0; k < arrRute.get(j).size(); k++) {
-
-								// TRAYEK WAYPOINT
-								String point = arrRute.get(j).get(k);
-								TrayekWaypoint trayekWaypoint = new TrayekWaypoint(
-										null, point);
-								// cek apakah sudah ada
-								TrayekWaypoint searchDao = KiriApp
-										.getTrayekWaypointDao()
-										.queryBuilder()
-										.where(TrayekWaypointDao.Properties.Point
-												.eq(point)).unique();
-								long waypointId;
-								if (searchDao != null) {
-									waypointId = searchDao.getId();
-								} else {
-									waypointId = KiriApp.getTrayekWaypointDao()
-											.insert(trayekWaypoint);
-								}
-
-								// TRACK DETAIL
-								TrayekRouteDetail trayekRouteDetail = new TrayekRouteDetail(
-										null, waypointId, trayekRouteId, k + 1);
-								KiriApp.getTrayekRouteDetailDao().insert(
-										trayekRouteDetail);
-							}
-						}
-
-						mContext.runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								totalData = totalData + 1;
-								dialog.setProgress(totalData);
-							}
-						});
+					// call next page
+					if (totalTrayekFromApi < totalAll) {
+						trayekApiPage++;
+						trayekAllApi.callApi(trayekApiPage);
 					}
 
-					totalTrayekFromApi = totalTrayekFromApi + totalCurrent;
-
-					mContext.runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							// call next page
-							if (totalTrayekFromApi < totalAll) {
-								trayekApiPage++;
-								trayekAllApi.callApi(trayekApiPage);
-							} else {
-								dialog.cancel();
-							}
-
-						}
-					});
-				};
-			};
-			thread.start();
+				}
+			});
 		}
 
 	};

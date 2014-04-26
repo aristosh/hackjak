@@ -1,14 +1,14 @@
 package com.kiri.hackjak;
 
+import java.util.List;
+
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.kiri.hackjak.grdaos.DaoMaster;
-import com.kiri.hackjak.grdaos.DaoSession;
-import com.kiri.hackjak.grdaos.TrayekDao;
-import com.kiri.hackjak.grdaos.TrayekRouteDao;
-import com.kiri.hackjak.grdaos.TrayekRouteDetailDao;
-import com.kiri.hackjak.grdaos.TrayekWaypointDao;
+import com.kiri.hackjak.sqlite.DaoMaster;
+import com.kiri.hackjak.sqlite.DaoSession;
+import com.kiri.hackjak.sqlite.TrayekDao;
+import com.kiri.hackjak.sqlite.TrayekWaypointDao;
 
 public class KiriApp extends Application {
 	private static SQLiteDatabase db;
@@ -17,8 +17,8 @@ public class KiriApp extends Application {
 	private static DaoSession daoSession;
 
 	private static TrayekDao trayekDao;
-	private static TrayekRouteDao trayekRouteDao;
-	private static TrayekRouteDetailDao trayekRouteDetailDao;
+	// private static TrayekRouteDao trayekRouteDao;
+	// private static TrayekRouteDetailDao trayekRouteDetailDao;
 	private static TrayekWaypointDao trayekWaypointDao;
 
 	@Override
@@ -26,6 +26,25 @@ public class KiriApp extends Application {
 		super.onCreate();
 
 		initDatabase();
+	}
+
+	public static String implodeArray(List<String> inputArray, String glueString) {
+		/** Output variable */
+		String output = "";
+
+		if (inputArray.size() > 0) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(inputArray.get(0));
+
+			for (int i = 1; i < inputArray.size(); i++) {
+				sb.append(glueString);
+				sb.append(inputArray.get(i));
+			}
+
+			output = sb.toString();
+		}
+
+		return output;
 	}
 
 	private void initDatabase() {
@@ -36,8 +55,8 @@ public class KiriApp extends Application {
 		daoSession = daoMaster.newSession();
 
 		trayekDao = daoSession.getTrayekDao();
-		trayekRouteDao = daoSession.getTrayekRouteDao();
-		trayekRouteDetailDao = daoSession.getTrayekRouteDetailDao();
+		// trayekRouteDao = daoSession.getTrayekRouteDao();
+		// trayekRouteDetailDao = daoSession.getTrayekRouteDetailDao();
 		trayekWaypointDao = daoSession.getTrayekWaypointDao();
 	}
 
@@ -45,16 +64,15 @@ public class KiriApp extends Application {
 		return trayekDao;
 	}
 
-	public static TrayekRouteDao getTrayekRouteDao() {
-		return trayekRouteDao;
-	}
-
-	public static TrayekRouteDetailDao getTrayekRouteDetailDao() {
-		return trayekRouteDetailDao;
-	}
-
 	public static TrayekWaypointDao getTrayekWaypointDao() {
 		return trayekWaypointDao;
 	}
+	// public static TrayekRouteDao getTrayekRouteDao() {
+	// return trayekRouteDao;
+	// }
+	//
+	// public static TrayekRouteDetailDao getTrayekRouteDetailDao() {
+	// return trayekRouteDetailDao;
+	// }
 
 }

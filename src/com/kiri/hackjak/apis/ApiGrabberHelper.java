@@ -34,7 +34,7 @@ public class ApiGrabberHelper {
 
 	public void grabDataFromApi() {
 		dialog = new ProgressDialog(mContext);
-		dialog.setMessage("Loading");
+		dialog.setMessage("Preparing data for first time...");
 		dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		dialog.setIndeterminate(false);
 
@@ -45,7 +45,7 @@ public class ApiGrabberHelper {
 			trayekAllApi.callApi(trayekApiPage);
 		}
 	}
-
+	
 	private void insertDataToDb() {
 		Thread thread = new Thread() {
 			@Override

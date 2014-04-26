@@ -7,8 +7,6 @@ import android.app.Activity;
 import android.widget.Toast;
 
 import com.kiri.hackjak.KiriApp;
-import com.kiri.hackjak.apis.ApiGrabberHelper;
-import com.kiri.hackjak.sqlite.TrayekDao;
 
 public class RoutingEngineFactory {
 	private String ASSETS_TRAYEK = "processed_trayek_bus_jakarta.csv";

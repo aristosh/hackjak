@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kiri.hackjak.KiriApp;
-import com.kiri.hackjak.sqlite.Trayek;
+import com.kiri.hackjak.db.Trayek;
 
 import de.greenrobot.dao.query.QueryBuilder;
 
@@ -16,23 +16,26 @@ public class SQLiteRouteWorldFactory {
 		QueryBuilder<Trayek> qb = KiriApp.getTrayekDao().queryBuilder();
 		List<Trayek> trayeks = qb.list();
 
-		for(Trayek trayek : trayeks) {
+		for (Trayek trayek : trayeks) {
 			TrayekModel tm = new TrayekModel();
-			tm.kategori = trayek.getKategori();
-			tm.namaSingkat = trayek.getNamasingkat();
-			tm.route = stringToNodes(trayek.getRoute(), tm, newWorld.availableWaypoints);
+			// TODO ibun edit biar ga error
+			tm.kategori = trayek.getJenisAngkutan();
+			tm.namaSingkat = trayek.getNamaTrayek();
+			tm.route = stringToNodes("test", tm, newWorld.availableWaypoints);
+			// end ibun
 			newWorld.trayeks.add(tm);
-			
-			for (String key: newWorld.availableWaypoints.keySet()) {
+
+			for (String key : newWorld.availableWaypoints.keySet()) {
 				newWorld.waypoints.add(newWorld.availableWaypoints.get(key));
 			}
 		}
-		
+
 		newWorld.graph = new Graph(newWorld);
 		return newWorld;
 	}
-	
-	private static List<Node> stringToNodes(String route, TrayekModel owner, Map<String, WaypointModel> availableWaypoints) {
+
+	private static List<Node> stringToNodes(String route, TrayekModel owner,
+			Map<String, WaypointModel> availableWaypoints) {
 		List<Node> returnedRoads = new ArrayList<Node>();
 		String[] parts = route.split(",");
 		for (int i = 0; i < parts.length; i++) {

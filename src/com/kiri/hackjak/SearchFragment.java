@@ -12,11 +12,10 @@ import android.widget.Toast;
 
 import com.kiri.hackjak.adapters.WaypointAdapter;
 import com.kiri.hackjak.apis.ApiGrabberHelper;
+import com.kiri.hackjak.db.TrayekWaypoint;
+import com.kiri.hackjak.db.TrayekWaypointDao;
 import com.kiri.hackjak.model.RoutingEngine;
-import com.kiri.hackjak.model.RoutingEngineFactory;
 import com.kiri.hackjak.model.WaypointModel;
-import com.kiri.hackjak.sqlite.TrayekWaypoint;
-import com.kiri.hackjak.sqlite.TrayekWaypointDao;
 
 import de.greenrobot.dao.query.QueryBuilder;
 
@@ -50,13 +49,13 @@ public class SearchFragment extends Fragment implements OnClickListener {
 
 		// get data from API
 		hackJakApiHelper = new ApiGrabberHelper(getActivity());
-		// hackJakApiHelper.grabDataFromApi();
+		hackJakApiHelper.grabDataFromApi();
 
 		// TODO lambat di bagian ini , mohon dituning. Mungkin object bisa
 		// dipindahkan ke KiriActivity
 		// get data either from CSV or SQLite
-		RoutingEngineFactory ref = new RoutingEngineFactory(getActivity());
-		router = ref.createRoutingEngine();
+		// RoutingEngineFactory ref = new RoutingEngineFactory(getActivity());
+		// router = ref.createRoutingEngine();
 
 		WaypointAdapter adapter = new WaypointAdapter(getActivity(),
 				android.R.layout.simple_dropdown_item_1line);

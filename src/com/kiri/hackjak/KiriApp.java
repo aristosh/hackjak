@@ -5,10 +5,12 @@ import java.util.List;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.kiri.hackjak.sqlite.DaoMaster;
-import com.kiri.hackjak.sqlite.DaoSession;
-import com.kiri.hackjak.sqlite.TrayekDao;
-import com.kiri.hackjak.sqlite.TrayekWaypointDao;
+import com.kiri.hackjak.db.DaoMaster;
+import com.kiri.hackjak.db.DaoSession;
+import com.kiri.hackjak.db.TrayekDao;
+import com.kiri.hackjak.db.TrayekRouteDao;
+import com.kiri.hackjak.db.TrayekRouteDetailDao;
+import com.kiri.hackjak.db.TrayekWaypointDao;
 
 public class KiriApp extends Application {
 	private static SQLiteDatabase db;
@@ -17,8 +19,8 @@ public class KiriApp extends Application {
 	private static DaoSession daoSession;
 
 	private static TrayekDao trayekDao;
-	// private static TrayekRouteDao trayekRouteDao;
-	// private static TrayekRouteDetailDao trayekRouteDetailDao;
+	private static TrayekRouteDao trayekRouteDao;
+	private static TrayekRouteDetailDao trayekRouteDetailDao;
 	private static TrayekWaypointDao trayekWaypointDao;
 
 	@Override
@@ -55,8 +57,8 @@ public class KiriApp extends Application {
 		daoSession = daoMaster.newSession();
 
 		trayekDao = daoSession.getTrayekDao();
-		// trayekRouteDao = daoSession.getTrayekRouteDao();
-		// trayekRouteDetailDao = daoSession.getTrayekRouteDetailDao();
+		trayekRouteDao = daoSession.getTrayekRouteDao();
+		trayekRouteDetailDao = daoSession.getTrayekRouteDetailDao();
 		trayekWaypointDao = daoSession.getTrayekWaypointDao();
 	}
 
@@ -67,13 +69,13 @@ public class KiriApp extends Application {
 	public static TrayekWaypointDao getTrayekWaypointDao() {
 		return trayekWaypointDao;
 	}
-	
-	// public static TrayekRouteDao getTrayekRouteDao() {
-	// return trayekRouteDao;
-	// }
-	//
-	// public static TrayekRouteDetailDao getTrayekRouteDetailDao() {
-	// return trayekRouteDetailDao;
-	// }
+
+	public static TrayekRouteDao getTrayekRouteDao() {
+		return trayekRouteDao;
+	}
+
+	public static TrayekRouteDetailDao getTrayekRouteDetailDao() {
+		return trayekRouteDetailDao;
+	}
 
 }

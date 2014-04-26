@@ -12,8 +12,8 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.kiri.hackjak.KiriApp;
-import com.kiri.hackjak.sqlite.TrayekWaypoint;
-import com.kiri.hackjak.sqlite.TrayekWaypointDao;
+import com.kiri.hackjak.db.TrayekWaypoint;
+import com.kiri.hackjak.db.TrayekWaypointDao;
 
 import de.greenrobot.dao.query.QueryBuilder;
 

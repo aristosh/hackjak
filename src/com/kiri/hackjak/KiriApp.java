@@ -11,10 +11,11 @@ import com.kiri.hackjak.db.TrayekDao;
 import com.kiri.hackjak.db.TrayekRouteDao;
 import com.kiri.hackjak.db.TrayekRouteDetailDao;
 import com.kiri.hackjak.db.TrayekWaypointDao;
+import com.kiri.hackjak.sqliteasset.MyDatabase;
 
 public class KiriApp extends Application {
 	private static SQLiteDatabase db;
-	private static DaoMaster.DevOpenHelper dbHelper;
+	// private static DaoMaster.DevOpenHelper dbHelper;
 	private static DaoMaster daoMaster;
 	private static DaoSession daoSession;
 
@@ -50,8 +51,9 @@ public class KiriApp extends Application {
 	}
 
 	private void initDatabase() {
-		dbHelper = new DaoMaster.DevOpenHelper(getApplicationContext(),
-				"hackjack_db", null);
+		// dbHelper = new DaoMaster.DevOpenHelper(getApplicationContext(),
+		// "hackjack_db", null);
+		MyDatabase dbHelper = new MyDatabase(this);
 		db = dbHelper.getWritableDatabase();
 		daoMaster = new DaoMaster(db);
 		daoSession = daoMaster.newSession();

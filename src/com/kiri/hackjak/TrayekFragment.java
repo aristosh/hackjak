@@ -28,6 +28,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.androidquery.AQuery;
 import com.kiri.hackjak.adapters.FormattedResultAdapter;
 import com.kiri.hackjak.adapters.WaypointAdapter;
 import com.kiri.hackjak.db.TrayekRouteDetail;
@@ -41,6 +42,7 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 		OnScrollListener {
 	private static final String ARG_SECTION_NUMBER = "section_number";
 
+	AQuery aq;
 	AutoCompleteTextView acFrom;
 	AutoCompleteTextView acTo;
 	Button btnSearch;
@@ -89,11 +91,13 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 		View rootView = inflater.inflate(R.layout.fragment_trayek, container,
 				false);
 
+		aq = new AQuery(rootView);
 		mButtonNavigate = (ImageButton) rootView
 				.findViewById(R.id.buttonNavigate);
 		acFrom = (AutoCompleteTextView) rootView.findViewById(R.id.acEditFrom);
 		acTo = (AutoCompleteTextView) rootView.findViewById(R.id.acEditTo);
 		btnSearch = (Button) rootView.findViewById(R.id.btnSearch);
+		rootView.findViewById(R.id.btn_taxi).setOnClickListener(this);
 
 		WaypointAdapter adapter = new WaypointAdapter(getActivity());
 		acFrom.setAdapter(adapter);
@@ -149,10 +153,10 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 								.getText().toString())).unique();
 
 				new SearchTask().execute(waypointFrom, waypointTo);
-				
+
 				if (android.os.Build.VERSION.SDK_INT >= 16) {
 					// TODO : unhide
-					//mButtonNavigate.setVisibility(View.VISIBLE);
+					// mButtonNavigate.setVisibility(View.VISIBLE);
 				}
 			} else {
 				Toast.makeText(getActivity(), "Invalid input parameter",
@@ -169,6 +173,11 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 						Toast.LENGTH_SHORT).show();
 				getActivity().moveTaskToBack(true);
 			}
+			break;
+		case R.id.btn_taxi:
+			KiriActivity activity = (KiriActivity) getActivity();
+			activity.getNavigationDrawerFragment().selectItem(2);
+			activity.onSectionAttached(2);
 			break;
 		default:
 			break;
@@ -211,6 +220,17 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 		protected void onPostExecute(List<TrayekRouteDetail> listRouteDetails) {
 			dialog.cancel();
 			mRouteList.clear();
+			// suggest to taxi
+			if (listRouteDetails.size() == 0) {
+				getListView().setVisibility(View.GONE);
+				aq.id(R.id.layout_suggest_taxi).visibility(View.VISIBLE);
+				aq.id(R.id.buttonNavigate).visibility(View.GONE);
+				return;
+			}
+
+			getListView().setVisibility(View.VISIBLE);
+			aq.id(R.id.layout_suggest_taxi).visibility(View.GONE);
+			aq.id(R.id.buttonNavigate).visibility(View.VISIBLE);
 			FormattedResult currentResult = null;
 
 			TrayekRouteDetail prev = null;

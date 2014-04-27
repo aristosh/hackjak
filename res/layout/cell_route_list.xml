@@ -6,8 +6,7 @@
     android:background="@color/light_black"
     android:gravity="center_vertical"
     android:minHeight="60dp"
-    android:paddingBottom="5dp"
-    android:paddingTop="5dp" >
+    android:paddingRight="5dp" >
 
     <View
         android:id="@+id/view_indicator"
@@ -47,6 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:fontFamily="sans-serif-thin"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
         android:text="Naik angkot lalu turun di angkot"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#FFF" />

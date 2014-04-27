@@ -139,4 +139,8 @@ public class KiriActivity extends ActionBarActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 
+	public NavigationDrawerFragment getNavigationDrawerFragment() {
+		return mNavigationDrawerFragment;
+	}
+
 }

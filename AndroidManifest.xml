@@ -29,18 +29,17 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name="com.kiri.hackjak.KiriActivity" >
+        <activity android:name="com.kiri.hackjak.KiriActivity"
+            android:configChanges="screenSize|orientation" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name="com.kiri.hackjak.ListResultActivity"
-            android:label="@string/title_activity_list_result" >
-        </activity>
-        <activity
+            android:configChanges="screenSize|orientation"
             android:name="com.kiri.hackjak.RouteMapActivity"
             android:label="@string/title_activity_map" >
         </activity>

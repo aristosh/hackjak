@@ -155,7 +155,7 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 					//mButtonNavigate.setVisibility(View.VISIBLE);
 				}
 			} else {
-				Toast.makeText(getActivity(), "Invalid input parameter",
+				Toast.makeText(getActivity(), R.string.invalid_input,
 						Toast.LENGTH_LONG).show();
 			}
 			break;
@@ -189,7 +189,7 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 		@Override
 		protected void onPreExecute() {
 			dialog = ProgressDialog.show(getActivity(), null,
-					"Searching route", true, true);
+					getActivity().getResources().getString(R.string.searching_route, true, true));
 		}
 
 		@Override
@@ -225,7 +225,7 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 						|| prev.getIdRuteTrayek() != routeDetail
 								.getIdRuteTrayek()) {
 					// BOARDING
-					currentResult = new FormattedResult();
+					currentResult = new FormattedResult(getActivity());
 					currentResult.idRuteTrayek = routeDetail.getIdRuteTrayek();
 					currentResult.type = FormattedResult.Type.BOARD;
 
@@ -234,14 +234,14 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 						|| next.getIdRuteTrayek() != routeDetail
 								.getIdRuteTrayek()) {
 					// ALIGHTING
-					currentResult = new FormattedResult();
+					currentResult = new FormattedResult(getActivity());
 					currentResult.idRuteTrayek = routeDetail.getIdRuteTrayek();
 					currentResult.type = FormattedResult.Type.ALIGHT;
 
 					mRouteList.add(currentResult);
 				} else if (currentResult.type == FormattedResult.Type.BOARD) {
 					// ON GOING
-					currentResult = new FormattedResult();
+					currentResult = new FormattedResult(getActivity());
 					currentResult.idRuteTrayek = routeDetail.getIdRuteTrayek();
 					currentResult.type = FormattedResult.Type.OTW;
 

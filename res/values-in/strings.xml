@@ -11,6 +11,7 @@
     <string name="depart">keberangkatan</string>
     <string name="destination">tujuan</string>
     <string name="invalid_input">Masukan %s salah</string>
+    <string name="already_there">Kamu sudah berada disana :)</string>
     <string name="keep_riding_through" formatted="false">Tetap di %s melalui </string>
     <string name="leaving_from">Pergi dari</string>
     <string name="leaving_to">Pergi ke</string>

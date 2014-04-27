@@ -148,12 +148,17 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 					.where(TrayekWaypointDao.Properties.Point.eq(acTo.getText()
 							.toString())).unique();
 			if (waypointFrom != null && waypointTo != null) {
-				new SearchTask().execute(waypointFrom, waypointTo);
-
-				if (android.os.Build.VERSION.SDK_INT >= 16) {
-					// TODO : unhide
-					// mButtonNavigate.setVisibility(View.VISIBLE);
+				if (waypointFrom.getId() == waypointTo.getId()) {
+					Toast.makeText(getActivity(),
+							getString(R.string.already_there),
+							Toast.LENGTH_LONG).show();
+				} else {
+					new SearchTask().execute(waypointFrom, waypointTo);
 				}
+				// if (android.os.Build.VERSION.SDK_INT >= 16) {
+				// TODO : unhide
+				// mButtonNavigate.setVisibility(View.VISIBLE);
+				// }
 			} else {
 				String error = "";
 				if (waypointFrom == null && waypointTo == null)
@@ -233,7 +238,7 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 
 			getListView().setVisibility(View.VISIBLE);
 			aq.id(R.id.layout_suggest_taxi).visibility(View.GONE);
-			//aq.id(R.id.buttonNavigate).visibility(View.VISIBLE);
+			// aq.id(R.id.buttonNavigate).visibility(View.VISIBLE);
 			FormattedResult currentResult = null;
 
 			TrayekRouteDetail prev = null;

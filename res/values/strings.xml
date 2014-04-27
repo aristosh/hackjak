@@ -12,6 +12,7 @@
     <string name="depart">depart</string>
     <string name="destination">destination</string>
     <string name="invalid_input">Invalid %s parameter</string>
+    <string name="already_there">You are already there</string>
     <string name="keep_riding_through" formatted="false">Keep riding %s through </string>
     <string name="leaving_from">Leaving from</string>
     <string name="leaving_to">Leaving to</string>

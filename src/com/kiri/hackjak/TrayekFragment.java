@@ -113,9 +113,6 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 		mButtonNavigate.setVisibility(View.GONE);
 		// if (mRouteList.size() > 0) {
 		mButtonNavigate.setOnClickListener(this);
-		if (android.os.Build.VERSION.SDK_INT >= 16) {
-			mButtonNavigate.setVisibility(View.VISIBLE);
-		}
 
 		mAdapter = new FormattedResultAdapter(getActivity(),
 				R.layout.cell_route_list, mRouteList);
@@ -152,6 +149,11 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 								.getText().toString())).unique();
 
 				new SearchTask().execute(waypointFrom, waypointTo);
+				
+				if (android.os.Build.VERSION.SDK_INT >= 16) {
+					// TODO : unhide
+					//mButtonNavigate.setVisibility(View.VISIBLE);
+				}
 			} else {
 				Toast.makeText(getActivity(), "Invalid input parameter",
 						Toast.LENGTH_LONG).show();

@@ -72,10 +72,14 @@ public class FormattedResult {
 			return String.format(resources.getString(R.string.alight_from), jenisTrayekString.equals("-") ? jenisAngkutanString : jenisTrayekString, noTrayekString, pointString.get(0));
 		} else {
 			String detail = String.format(resources.getString(R.string.keep_riding_through), noTrayekString);
-			for(int i = 0; i < pointId.size() - 1; i++) {
-				detail += String.format("%s, ", pointString.get(i));
+			if(pointId.size() == 1) {
+				detail += (" " +pointString.get(0));
+			} else {
+				for(int i = 0; i < pointId.size() - 1; i++) {
+					detail += String.format("%s, ", pointString.get(i));
+				}
+				detail += String.format(resources.getString(R.string.and), pointString.get(pointString.size() - 1));
 			}
-			detail += String.format(resources.getString(R.string.and), pointString.get(pointString.size() - 1));
 			return detail;
 		}
 	}

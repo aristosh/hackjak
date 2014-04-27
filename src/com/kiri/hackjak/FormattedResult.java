@@ -71,7 +71,7 @@ public class FormattedResult {
 		} else if(type == Type.ALIGHT) {
 			return String.format(resources.getString(R.string.alight_from), jenisTrayekString.equals("-") ? jenisAngkutanString : jenisTrayekString, noTrayekString, pointString.get(0));
 		} else {
-			String detail = String.format(resources.getString(R.string.keep_riding_through), noTrayekString);
+			String detail = String.format(resources.getString(R.string.keep_riding_through) + " ", noTrayekString);
 			if(pointId.size() == 1) {
 				detail += (" " +pointString.get(0));
 			} else {

@@ -37,10 +37,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.kiri.hackjak.ListResultActivity"
-            android:label="@string/title_activity_list_result" >
-        </activity>
-        <activity
             android:name="com.kiri.hackjak.RouteMapActivity"
             android:label="@string/title_activity_map" >
         </activity>

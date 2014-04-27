@@ -12,11 +12,11 @@ import com.kiri.hackjak.apis.ApiGrabberHelper;
 
 public class KiriActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
-	public static final int SECTION_TRAYEK = 0;
-	public static final int SECTION_TAXI = 1;
-	public static final int SECTION_COMMUTER = 2;
-	public static final int SECTION_CONTRIBUTE = 3;
-	public static final int SECTION_ABOUT = 4;
+	public static final int SECTION_TRAYEK = 1;
+	public static final int SECTION_TAXI = 2;
+	public static final int SECTION_COMMUTER = 3;
+	public static final int SECTION_CONTRIBUTE = 5;
+	public static final int SECTION_ABOUT = 6;
 
 	ApiGrabberHelper hackJakApiHelper;
 

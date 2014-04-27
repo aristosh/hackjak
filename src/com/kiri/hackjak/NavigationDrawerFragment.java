@@ -1,5 +1,7 @@
 package com.kiri.hackjak;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -18,8 +20,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.kiri.hackjak.adapters.NavDrawerAdapter;
+import com.kiri.hackjak.astickyheader.SimpleSectionedListAdapter;
+import com.kiri.hackjak.astickyheader.SimpleSectionedListAdapter.Section;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation
@@ -29,6 +34,7 @@ import android.widget.ListView;
  * implemented here.
  */
 public class NavigationDrawerFragment extends Fragment {
+	private ArrayList<Section> sections = new ArrayList<Section>();
 
 	/**
 	 * Remember the position of the selected item.
@@ -55,7 +61,7 @@ public class NavigationDrawerFragment extends Fragment {
 	private ListView mDrawerListView;
 	private View mFragmentContainerView;
 
-	private int mCurrentSelectedPosition = 0;
+	private int mCurrentSelectedPosition = 1;
 	private boolean mFromSavedInstanceState;
 	private boolean mUserLearnedDrawer;
 
@@ -104,13 +110,24 @@ public class NavigationDrawerFragment extends Fragment {
 						selectItem(position);
 					}
 				});
-		mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
-				.getThemedContext(), R.layout.row_nav_drawer, R.id.text,
-				new String[] { getString(R.string.title_section_trayek),
-						getString(R.string.title_section_taxi),
-						getString(R.string.title_section_commuter),
-						getString(R.string.title_section_contribute),
-						getString(R.string.title_section_about), }));
+		sections.clear();
+		NavDrawerAdapter adapter = new NavDrawerAdapter(getActivity());
+		sections.add(new Section(0, "Public Transport"));
+		sections.add(new Section(3, "KIRI HackJak"));
+		SimpleSectionedListAdapter simpleSectionedGridAdapter = new SimpleSectionedListAdapter(
+				getActivity(), adapter, R.layout.row_nav_drawer_header,
+				R.id.text1);
+		simpleSectionedGridAdapter
+				.setSections(sections.toArray(new Section[0]));
+		mDrawerListView.setAdapter(simpleSectionedGridAdapter);
+
+		// mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
+		// .getThemedContext(), R.layout.row_nav_drawer, R.id.text,
+		// new String[] { getString(R.string.title_section_trayek),
+		// getString(R.string.title_section_taxi),
+		// getString(R.string.title_section_commuter),
+		// getString(R.string.title_section_contribute),
+		// getString(R.string.title_section_about), }));
 		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 		return mDrawerListView;
 	}
@@ -148,15 +165,7 @@ public class NavigationDrawerFragment extends Fragment {
 		mDrawerToggle = new ActionBarDrawerToggle(getActivity(), /* host Activity */
 		mDrawerLayout, /* DrawerLayout object */
 		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-		R.string.navigation_drawer_open, /*
-										 * "open drawer" description for
-										 * accessibility
-										 */
-		R.string.navigation_drawer_close /*
-										 * "close drawer" description for
-										 * accessibility
-										 */
-		) {
+		R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 			@Override
 			public void onDrawerClosed(View drawerView) {
 				super.onDrawerClosed(drawerView);

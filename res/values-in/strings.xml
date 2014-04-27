@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   	<string name="code">in</string>
+	<string name="and" formatted="false">dan %s</string>
+    <string name="app_name">KIRI HackJak</string>
+    <string name="action_update">Update data</string>
+    <string name="alight_from" formatted="false">Turun dari %s %s di %s</string>
+    <string name="board_at" formatted="false">Naik %s %s di %s</string>
+    <string name="do_you_want_to_update">Anda ingin memperbarui data? Anda harus menunggu sampai proses selesai.</string>
+    <string name="google_api_key">AIzaSyDejypApqL9bt8neuQtvBvcAOb9QA7WGmk</string>
+    <string name="invalid_input">Masukan salah</string>
+    <string name="keep_riding_through" formatted="false">Tetap di %s melalui </string>
+    <string name="leaving_from">Pergi dari</string>
+    <string name="leaving_to">Pergi ke</string>
+    <string name="loading">Membuka</string>
+    <string name="not_now">Nanti</string>
+    <string name="title_activity_map">Rute Trayek</string>
+    <string name="title_activity_notification_receiver">KIRI HackJak</string>
+    <string name="title_activity_kiri">KIRI HackJak</string>
+    <string name="title_section_trayek">Bis / Angkot</string>
+    <string name="title_section_taxi">Taksi</string>
+    <string name="title_section_commuter">Komuter (Segera)</string>
+    <string name="title_section_contribute">Kontribusi Data</string>
+    <string name="title_section_update">Perbarui Data</string>
+    <string name="title_section_about">Tentang KIRI HackJak</string>
+    <string name="navigation_drawer_open">Buka laci navigasi</string>
+    <string name="navigation_drawer_close">Tutup laci navigasi</string>
+    <string name="path_not_available">Path tidak tersedia. Mohon kontribusi di https://angkot.web.id</string>
+    <string name="search">Cari</string>
+    <string name="searching_route">Mencari rute</string>
+    <string name="yes">Ya</string>
+</resources>

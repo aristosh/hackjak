@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<string name="code">en</string>
+	<string name="and" formatted="false">and %s</string>
     <string name="app_name">KIRI HackJak</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_update">Update data</string>
-    <string name="title_activity_list_result">ListResultActivity</string>
+    <string name="alight_from" formatted="false">Alight from %s %s at %s</string>
+    <string name="board_at" formatted="false">Board %s %s at %s</string>
+    <string name="do_you_want_to_update">Do you want to update data? You must wait until it is complete</string>
     <string name="google_api_key">AIzaSyDejypApqL9bt8neuQtvBvcAOb9QA7WGmk</string>
-    <string name="title_activity_map">MapActivity</string>
-    <string name="title_activity_notification_receiver">NotificationReceiverActivity</string>
+    <string name="invalid_input">Invalid input parameter</string>
+    <string name="keep_riding_through" formatted="false">Keep riding %s through </string>
+    <string name="leaving_from">Leaving from</string>
+    <string name="leaving_to">Leaving to</string>
+    <string name="loading">Loading</string>
+    <string name="not_now">Not now</string>
+    <string name="title_activity_map">Trayek Route</string>
+    <string name="title_activity_notification_receiver">KIRI HackJak</string>
     <string name="title_activity_kiri">KIRI HackJak</string>
     <string name="title_section_trayek">Bus / Angkot</string>
     <string name="title_section_taxi">Taxi</string>
@@ -17,7 +25,8 @@
     <string name="title_section_about">About KIRI HackJak</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
     <string name="path_not_available">Path is not available. Please contribute at https://angkot.web.id</string>
-    
+    <string name="search">Search</string>
+    <string name="searching_route">Searching route</string>
+    <string name="yes">Yes</string>
 </resources>

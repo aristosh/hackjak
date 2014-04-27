@@ -43,8 +43,9 @@ public class AboutFragment extends Fragment {
 		WebView webView = (WebView) rootView.findViewById(R.id.aboutWebView);
 		try {
 			String fileName = getArguments().getString(ARG_FILENAME);
+			String localeCode = getResources().getString(R.string.code);
 			InputStream is = getActivity().getAssets().open(
-					fileName + "_en.html");
+					fileName + "_" + localeCode + ".html");
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(is));
 			StringBuilder sb = new StringBuilder();

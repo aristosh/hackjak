@@ -11,6 +11,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 
 import com.kiri.hackjak.KiriApp;
+import com.kiri.hackjak.R;
 import com.kiri.hackjak.apis.TrayekAllApi.TrayekApiDao;
 import com.kiri.hackjak.db.Trayek;
 import com.kiri.hackjak.db.TrayekRoute;
@@ -39,14 +40,14 @@ public class ApiGrabberHelper {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				mContext);
 		alertDialogBuilder
-				.setMessage("Do you want to update data? You must wait until it is complete");
-		alertDialogBuilder.setPositiveButton("Yes",
+				.setMessage(R.string.do_you_want_to_update);
+		alertDialogBuilder.setPositiveButton(R.string.yes,
 				new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface d, int which) {
 						dialog = new ProgressDialog(mContext);
-						dialog.setMessage("Loading");
+						dialog.setMessage(mContext.getResources().getString(R.string.loading));
 						dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 						dialog.setIndeterminate(false);
 						// delete db
@@ -60,7 +61,7 @@ public class ApiGrabberHelper {
 						trayekAllApi.callApi(trayekApiPage);
 					}
 				});
-		alertDialogBuilder.setNegativeButton("Not now",
+		alertDialogBuilder.setNegativeButton(R.string.not_now,
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {

@@ -3,6 +3,9 @@ package com.kiri.hackjak;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+import android.content.res.Resources;
+
 import com.kiri.hackjak.db.Trayek;
 import com.kiri.hackjak.db.TrayekDao;
 import com.kiri.hackjak.db.TrayekRoute;
@@ -26,9 +29,12 @@ public class FormattedResult {
 	private String jenisTrayekString;
 	private List<String> pointString;
 	
-	public FormattedResult() {
+	private Resources resources;
+	
+	public FormattedResult(Context context) {
 		pointId = new ArrayList<Long>();
 		pointString = new ArrayList<String>();
+		resources = context.getResources();
 	}
 
 	private void constructTexts() {
@@ -61,15 +67,15 @@ public class FormattedResult {
 		}
 		
 		if(type == Type.BOARD) {
-			return String.format("Board %s %s at %s", jenisTrayekString.equals("-") ? jenisAngkutanString : jenisTrayekString, noTrayekString, pointString.get(0));
+			return String.format(resources.getString(R.string.board_at), jenisTrayekString.equals("-") ? jenisAngkutanString : jenisTrayekString, noTrayekString, pointString.get(0));
 		} else if(type == Type.ALIGHT) {
-			return String.format("Alight from %s %s at %s", jenisTrayekString.equals("-") ? jenisAngkutanString : jenisTrayekString, noTrayekString, pointString.get(0));
+			return String.format(resources.getString(R.string.alight_from), jenisTrayekString.equals("-") ? jenisAngkutanString : jenisTrayekString, noTrayekString, pointString.get(0));
 		} else {
-			String detail = String.format("Keep riding %s through ", noTrayekString);
+			String detail = String.format(resources.getString(R.string.keep_riding_through), noTrayekString);
 			for(int i = 0; i < pointId.size() - 1; i++) {
 				detail += String.format("%s, ", pointString.get(i));
 			}
-			detail += String.format("and %s", pointString.get(pointString.size() - 1));
+			detail += String.format(resources.getString(R.string.and), pointString.get(pointString.size() - 1));
 			return detail;
 		}
 	}

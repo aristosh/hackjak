@@ -39,15 +39,15 @@ public class ApiGrabberHelper {
 		// Alert dialog
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				mContext);
-		alertDialogBuilder
-				.setMessage(R.string.do_you_want_to_update);
+		alertDialogBuilder.setMessage(R.string.do_you_want_to_update);
 		alertDialogBuilder.setPositiveButton(R.string.yes,
 				new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface d, int which) {
 						dialog = new ProgressDialog(mContext);
-						dialog.setMessage(mContext.getResources().getString(R.string.loading));
+						dialog.setMessage(mContext.getResources().getString(
+								R.string.loading));
 						dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 						dialog.setIndeterminate(false);
 						// delete db
@@ -69,7 +69,7 @@ public class ApiGrabberHelper {
 				});
 		alertDialogBuilder.create().show();
 	}
-	
+
 	private void insertDataToDb() {
 		Thread thread = new Thread() {
 			@Override
@@ -109,7 +109,8 @@ public class ApiGrabberHelper {
 						for (int k = 0; k < arrRute.get(j).size(); k++) {
 
 							// TRAYEK WAYPOINT
-							String point = arrRute.get(j).get(k);
+							String point = cleanWaypointName(arrRute.get(j)
+									.get(k));
 							TrayekWaypoint trayekWaypoint = new TrayekWaypoint(
 									null, point);
 							// cek apakah sudah ada
@@ -152,6 +153,28 @@ public class ApiGrabberHelper {
 			};
 		};
 		thread.start();
+	}
+
+	public String cleanWaypointName(String input) {
+		StringBuilder sb = new StringBuilder(input.length());
+		input = input.trim();
+		char lastChar = '-';
+		for (int i = 0; i < input.length(); i++) {
+			if (Character.isLetterOrDigit(input.charAt(i))
+					|| Character.isWhitespace(input.charAt(i))) {
+				if (Character.isLetterOrDigit(lastChar)) {
+					sb.append(Character.toLowerCase(input.charAt(i)));
+				} else {
+					sb.append(Character.toUpperCase(input.charAt(i)));
+				}
+			}
+			lastChar = input.charAt(i);
+		}
+		String result = sb.toString();
+		if (result.startsWith("Jl ")) {
+			result = result.substring(3);
+		}
+		return result.trim();
 	}
 
 	TrayekAllApi.ApiResultListener trayekAllApiListener = new TrayekAllApi.ApiResultListener() {

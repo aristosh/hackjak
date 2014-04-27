@@ -1,9 +1,8 @@
-package com.kiri.hackjak.adapters;
+package com.kiri.hackjak;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kiri.hackjak.KiriApp;
 import com.kiri.hackjak.db.Trayek;
 import com.kiri.hackjak.db.TrayekDao;
 import com.kiri.hackjak.db.TrayekRoute;

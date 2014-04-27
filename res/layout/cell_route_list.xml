@@ -8,6 +8,7 @@
     android:minHeight="60dp" >
 
     <View
+        android:id="@+id/view_indicator"
         android:layout_width="3dp"
         android:layout_height="match_parent"
         android:background="#1E93FF" />

@@ -2,7 +2,6 @@ package com.kiri.hackjak;
 
 import java.util.List;
 
-import com.kiri.hackjak.adapters.FormattedResult;
 import com.kiri.hackjak.model.SearchResult;
 
 import android.app.NotificationManager;

@@ -27,7 +27,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.kiri.hackjak.adapters.FormattedResult;
 import com.kiri.hackjak.adapters.FormattedResultAdapter;
 import com.kiri.hackjak.adapters.WaypointAdapter;
 import com.kiri.hackjak.db.TrayekRouteDetail;
@@ -113,7 +112,7 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 		mButtonNavigate.setVisibility(View.GONE);
 		// if (mRouteList.size() > 0) {
 		mButtonNavigate.setOnClickListener(this);
-		if (android.os.Build.VERSION.SDK_INT >= 11) {
+		if (android.os.Build.VERSION.SDK_INT >= 16) {
 			mButtonNavigate.setVisibility(View.VISIBLE);
 		}
 

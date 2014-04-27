@@ -13,8 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kiri.hackjak.FormattedResult;
 import com.kiri.hackjak.R;
 import com.kiri.hackjak.RouteMapActivity;
+import com.kiri.hackjak.FormattedResult.Type;
 
 public class FormattedResultAdapter extends ArrayAdapter<FormattedResult> {
 	private List<FormattedResult> mList;
@@ -41,6 +43,7 @@ public class FormattedResultAdapter extends ArrayAdapter<FormattedResult> {
 
 		FormattedResult step = mList.get(position);
 
+		View viewIndicator  = convertView.findViewById(R.id.view_indicator);
 		TextView textNoTrayek = (TextView) convertView
 				.findViewById(R.id.textNoTrayek);
 		TextView textResult = (TextView) convertView
@@ -48,6 +51,12 @@ public class FormattedResultAdapter extends ArrayAdapter<FormattedResult> {
 		ImageView imageMap = (ImageView) convertView
 				.findViewById(R.id.imageMap);
 
+		if(step.type == Type.BOARD)
+			viewIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
+		else if(step.type == Type.ALIGHT)
+			viewIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+		else
+			viewIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.white));
 		textNoTrayek.setText(step.getTitle() );
 		textResult.setText(step.getDetail());
 

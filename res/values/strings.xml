@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="code">en</string>
-	<string name="and" formatted="false">and %s</string>
+
+    <string name="code">en</string>
+    <string name="and" formatted="false">and %s</string>
     <string name="app_name">KIRI HackJak</string>
     <string name="action_update">Update data</string>
     <string name="alight_from" formatted="false">Alight from %s %s at %s</string>
     <string name="board_at" formatted="false">Board %s %s at %s</string>
     <string name="do_you_want_to_update">Do you want to update data? You must wait until it is complete</string>
     <string name="google_api_key">AIzaSyDejypApqL9bt8neuQtvBvcAOb9QA7WGmk</string>
-    <string name="invalid_input">Invalid input parameter</string>
+    <string name="depart">depart</string>
+    <string name="destination">destination</string>
+    <string name="invalid_input">Invalid %s parameter</string>
     <string name="keep_riding_through" formatted="false">Keep riding %s through </string>
     <string name="leaving_from">Leaving from</string>
     <string name="leaving_to">Leaving to</string>
@@ -29,4 +32,5 @@
     <string name="search">Search</string>
     <string name="searching_route">Searching route</string>
     <string name="yes">Yes</string>
+
 </resources>

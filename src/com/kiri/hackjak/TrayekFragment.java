@@ -36,8 +36,6 @@ import com.kiri.hackjak.db.TrayekWaypoint;
 import com.kiri.hackjak.db.TrayekWaypointDao;
 import com.kiri.hackjak.utils.Routing;
 
-import de.greenrobot.dao.query.QueryBuilder;
-
 public class TrayekFragment extends ListFragment implements OnClickListener,
 		OnScrollListener {
 	private static final String ARG_SECTION_NUMBER = "section_number";
@@ -139,19 +137,17 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 			InputMethodManager imm = (InputMethodManager) getActivity()
 					.getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(acTo.getWindowToken(), 0);
-			if (validateSearchParameter(acFrom.getText().toString())
-					&& validateSearchParameter(acTo.getText().toString())) {
-				TrayekWaypoint waypointFrom = KiriApp
-						.getTrayekWaypointDao()
-						.queryBuilder()
-						.where(TrayekWaypointDao.Properties.Point.eq(acFrom
-								.getText().toString())).unique();
-				TrayekWaypoint waypointTo = KiriApp
-						.getTrayekWaypointDao()
-						.queryBuilder()
-						.where(TrayekWaypointDao.Properties.Point.eq(acTo
-								.getText().toString())).unique();
-
+			TrayekWaypoint waypointFrom = KiriApp
+					.getTrayekWaypointDao()
+					.queryBuilder()
+					.where(TrayekWaypointDao.Properties.Point.eq(acFrom
+							.getText().toString())).unique();
+			TrayekWaypoint waypointTo = KiriApp
+					.getTrayekWaypointDao()
+					.queryBuilder()
+					.where(TrayekWaypointDao.Properties.Point.eq(acTo.getText()
+							.toString())).unique();
+			if (waypointFrom != null && waypointTo != null) {
 				new SearchTask().execute(waypointFrom, waypointTo);
 
 				if (android.os.Build.VERSION.SDK_INT >= 16) {
@@ -159,7 +155,18 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 					// mButtonNavigate.setVisibility(View.VISIBLE);
 				}
 			} else {
-				Toast.makeText(getActivity(), R.string.invalid_input,
+				String error = "";
+				if (waypointFrom == null && waypointTo == null)
+					error = getString(R.string.depart) + " and "
+							+ getString(R.string.destination);
+				else if (waypointFrom == null)
+					error = getString(R.string.depart);
+				else if (waypointTo == null)
+					error = getString(R.string.destination);
+
+				Toast.makeText(
+						getActivity(),
+						String.format(getString(R.string.invalid_input, error)),
 						Toast.LENGTH_LONG).show();
 			}
 			break;
@@ -184,21 +191,17 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 		}
 	}
 
-	private boolean validateSearchParameter(String param) {
-		QueryBuilder<TrayekWaypoint> qb = KiriApp.getTrayekWaypointDao()
-				.queryBuilder();
-		qb.where(TrayekWaypointDao.Properties.Point.like(param));
-		return qb.list().size() > 0;
-	}
-
 	private class SearchTask extends
 			AsyncTask<TrayekWaypoint, Void, List<TrayekRouteDetail>> {
 		ProgressDialog dialog;
 
 		@Override
 		protected void onPreExecute() {
-			dialog = ProgressDialog.show(getActivity(), null,
-					getActivity().getResources().getString(R.string.searching_route, true, true));
+			dialog = ProgressDialog.show(
+					getActivity(),
+					null,
+					getActivity().getResources().getString(
+							R.string.searching_route, true, true));
 		}
 
 		@Override

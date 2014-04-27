@@ -2,14 +2,13 @@ package com.kiri.hackjak;
 
 import java.util.List;
 
-import com.kiri.hackjak.adapters.FormattedResult;
-import com.kiri.hackjak.model.SearchResult;
-
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+
+import com.kiri.hackjak.adapters.FormattedResult;
 
 public class Navigation {	
 	public static String ACTION_PREV = "com.kiri.hackjak.ACTION_PREV";

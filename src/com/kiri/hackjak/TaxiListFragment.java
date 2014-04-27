@@ -94,6 +94,7 @@ public class TaxiListFragment extends ListFragment {
 			TextView tv2 = (TextView) v.findViewById(R.id.text2);
 
 			Taxi item = getItem(position);
+			v.setContentDescription("Call " + item.getName());
 			tv1.setText(item.getName());
 			List<String> arrPhone = new ArrayList<String>();
 			for (TaxiPhone phone : item.getPhones()) {

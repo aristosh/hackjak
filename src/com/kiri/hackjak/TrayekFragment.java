@@ -1,6 +1,5 @@
 package com.kiri.hackjak;
 
-import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +8,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
@@ -129,6 +130,14 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btnSearch:
+			if (acFrom.getText().toString().trim().equals("")
+					|| acTo.getText().toString().trim().equals("")) {
+				return;
+			}
+			// hide keyboard
+			InputMethodManager imm = (InputMethodManager) getActivity()
+					.getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(acTo.getWindowToken(), 0);
 			if (validateSearchParameter(acFrom.getText().toString())
 					&& validateSearchParameter(acTo.getText().toString())) {
 				TrayekWaypoint waypointFrom = KiriApp
@@ -151,11 +160,12 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 
 		case R.id.buttonNavigate:
 			if (mRouteList != null && mRouteList.size() > 0) {
-				 Navigation navigation = Navigation.getInstance();
-				 navigation.initiateRoutes(getActivity(), mRouteList);
-				 navigation.redraw();
-				 Toast.makeText(getActivity(), "Hidden to notification bar", Toast.LENGTH_SHORT).show();
-				 getActivity().moveTaskToBack(true);
+				Navigation navigation = Navigation.getInstance();
+				navigation.initiateRoutes(getActivity(), mRouteList);
+				navigation.redraw();
+				Toast.makeText(getActivity(), "Hidden to notification bar",
+						Toast.LENGTH_SHORT).show();
+				getActivity().moveTaskToBack(true);
 			}
 			break;
 		default:
@@ -204,37 +214,42 @@ public class TrayekFragment extends ListFragment implements OnClickListener,
 			TrayekRouteDetail prev = null;
 			for (int i = 0; i < listRouteDetails.size(); i++) {
 				TrayekRouteDetail routeDetail = listRouteDetails.get(i);
-				
+
 				TrayekRouteDetail next = null;
-				if(i < listRouteDetails.size() - 1) next = listRouteDetails.get(i + 1);
-				
-				if(prev == null || prev.getIdRuteTrayek() != routeDetail.getIdRuteTrayek()) {
+				if (i < listRouteDetails.size() - 1)
+					next = listRouteDetails.get(i + 1);
+
+				if (prev == null
+						|| prev.getIdRuteTrayek() != routeDetail
+								.getIdRuteTrayek()) {
 					// BOARDING
 					currentResult = new FormattedResult();
 					currentResult.idRuteTrayek = routeDetail.getIdRuteTrayek();
 					currentResult.type = FormattedResult.Type.BOARD;
-					
+
 					mRouteList.add(currentResult);
-				} else if(next == null || next.getIdRuteTrayek() != routeDetail.getIdRuteTrayek()) {
+				} else if (next == null
+						|| next.getIdRuteTrayek() != routeDetail
+								.getIdRuteTrayek()) {
 					// ALIGHTING
 					currentResult = new FormattedResult();
 					currentResult.idRuteTrayek = routeDetail.getIdRuteTrayek();
 					currentResult.type = FormattedResult.Type.ALIGHT;
-					
+
 					mRouteList.add(currentResult);
-				} else if(currentResult.type == FormattedResult.Type.BOARD){
+				} else if (currentResult.type == FormattedResult.Type.BOARD) {
 					// ON GOING
 					currentResult = new FormattedResult();
 					currentResult.idRuteTrayek = routeDetail.getIdRuteTrayek();
 					currentResult.type = FormattedResult.Type.OTW;
-					
+
 					mRouteList.add(currentResult);
 				}
-				
+
 				currentResult.pointId.add(routeDetail.getIdWaypoint());
 				prev = routeDetail;
 			}
-			
+
 			mAdapter.notifyDataSetChanged();
 		}
 	}

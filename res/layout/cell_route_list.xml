@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_route"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/light_black"
-    android:contentDescription="Naik angkot S02 berwarna hitam di Setiabudi"
     android:gravity="center_vertical"
-    android:minHeight="60dp" >
+    android:minHeight="60dp"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp" >
 
     <View
         android:id="@+id/view_indicator"

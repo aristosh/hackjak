@@ -14,9 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kiri.hackjak.FormattedResult;
+import com.kiri.hackjak.FormattedResult.Type;
 import com.kiri.hackjak.R;
 import com.kiri.hackjak.RouteMapActivity;
-import com.kiri.hackjak.FormattedResult.Type;
 
 public class FormattedResultAdapter extends ArrayAdapter<FormattedResult> {
 	private List<FormattedResult> mList;
@@ -43,27 +43,36 @@ public class FormattedResultAdapter extends ArrayAdapter<FormattedResult> {
 
 		FormattedResult step = mList.get(position);
 
-		View viewIndicator  = convertView.findViewById(R.id.view_indicator);
+		View viewIndicator = convertView.findViewById(R.id.view_indicator);
 		TextView textNoTrayek = (TextView) convertView
 				.findViewById(R.id.textNoTrayek);
 		TextView textResult = (TextView) convertView
 				.findViewById(R.id.textStep);
 		ImageView imageMap = (ImageView) convertView
 				.findViewById(R.id.imageMap);
+		ViewGroup layoutRoot = (ViewGroup) convertView
+				.findViewById(R.id.layout_route);
 
-		if(step.type == Type.BOARD)
-			viewIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
-		else if(step.type == Type.ALIGHT)
-			viewIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+		if (step.type == Type.BOARD)
+			viewIndicator.setBackgroundColor(mContext.getResources().getColor(
+					R.color.blue));
+		else if (step.type == Type.ALIGHT)
+			viewIndicator.setBackgroundColor(mContext.getResources().getColor(
+					R.color.red));
 		else
-			viewIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-		textNoTrayek.setText(step.getTitle() );
+			viewIndicator.setBackgroundColor(mContext.getResources().getColor(
+					R.color.white));
+		textNoTrayek.setText(step.getTitle());
 		textResult.setText(step.getDetail());
+		layoutRoot.setContentDescription(step.getDetail());
 
 		final Intent intent = new Intent(mContext, RouteMapActivity.class);
-		intent.putExtra(RouteMapActivity.ARG_JENIS_ANGKUTAN, step.getJenisAngkutanString());
-		intent.putExtra(RouteMapActivity.ARG_JENIS_TRAYEK, step.getJenisTrayekString());
-		intent.putExtra(RouteMapActivity.ARG_NO_TRAYEK, step.getNoTrayekString());
+		intent.putExtra(RouteMapActivity.ARG_JENIS_ANGKUTAN,
+				step.getJenisAngkutanString());
+		intent.putExtra(RouteMapActivity.ARG_JENIS_TRAYEK,
+				step.getJenisTrayekString());
+		intent.putExtra(RouteMapActivity.ARG_NO_TRAYEK,
+				step.getNoTrayekString());
 		if (RouteMapActivity.checkAvailability(this.getContext(), intent)) {
 			imageMap.setVisibility(View.VISIBLE);
 			// Note: the imageMap is to small to click -_- any alternative?

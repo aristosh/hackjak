@@ -106,11 +106,19 @@ public class ApiGrabberHelper {
 						long trayekRouteId = KiriApp.getTrayekRouteDao()
 								.insert(trayekRoute);
 
+						String lastWaypoint = null;
 						for (int k = 0; k < arrRute.get(j).size(); k++) {
 
 							// TRAYEK WAYPOINT
 							String point = cleanWaypointName(arrRute.get(j)
 									.get(k));
+							
+							// Skip if duplicate with before
+							if (point.equals(lastWaypoint)) {
+								continue;
+							}
+							
+							lastWaypoint = point;
 							TrayekWaypoint trayekWaypoint = new TrayekWaypoint(
 									null, point);
 							// cek apakah sudah ada
